@@ -1,0 +1,8 @@
+change directory:
+     > cd express_js_fullstack_template
+
+   install dependencies:
+     > npm install
+
+   run the app:
+     > SET DEBUG=express-js-fullstack-template:* & npm start
