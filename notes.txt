@@ -6,3 +6,17 @@ change directory:
 
    run the app:
      > SET DEBUG=express-js-fullstack-template:* & npm start
+
+////////////////////////////////////////////
+running application in dev mode
+- npm run dev
+
+//////////////////////////////////////////////////////////
+If using Helmet, use this in response render to use bootstrap and font awesome
+// res
+//   .set(
+//     "Content-Security-Policy",
+//     "default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'; font-src *; img-src 'self' data:; frame-src 'self' http://* 'unsafe-inline';"
+//   )
+//   .render("pages/index", { title: "Express" });
+///////////////////////////////////////////////////////////
