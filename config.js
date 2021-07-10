@@ -1,5 +1,4 @@
-require("dotenv").config();
-const env = process.env;
+const { env } = require("process");
 
 const config = {
   db: {

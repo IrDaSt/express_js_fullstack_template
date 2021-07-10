@@ -1,44 +1,84 @@
+const { env } = require("process");
 const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const logger = require("morgan");
+const morgan = require("morgan");
 const session = require("express-session");
 const flash = require("express-flash");
 const helmet = require("helmet");
 const cors = require("cors");
 const multer = require("multer");
 const bodyParser = require("body-parser");
+const rfs = require("rotating-file-stream");
 
 const webRouter = require("./routes/web");
 const apiRouter = require("./routes/api");
 
 const config = require("./config");
+const helper = require("./helper");
 
 var upload = multer();
 var app = express();
+
+// Create a rotating write stream for Logging system
+const generator = (time, index) => {
+  if (!time) return "access.log";
+
+  var month = time.getFullYear() + "-" + helper.pad(time.getMonth() + 1);
+  var day = helper.pad(time.getDate());
+  var hour = helper.pad(time.getHours());
+  var minute = helper.pad(time.getMinutes());
+
+  return `${month}/${month}${day}-${hour}${minute}-${index}-access.log.gzip`;
+};
+
+const accessLogStream = rfs.createStream(generator, {
+  size: "10M", // rotate every 10 MegaBytes written
+  interval: "1d", // rotate daily
+  compress: "gzip", // compress rotated files
+  path: path.join(__dirname, "log"), // place access log file to log folder
+});
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-app.use(bodyParser.json());
+// Use Morgan Logging system
+if (env.NODE_ENV === "development") {
+  console.log("Development mode");
+  app.use(morgan("dev"));
+  // Session set up
+  // Please use Cookie instead of session for production environment
+  app.use(session(config.session_setting));
+}
+// Stream logs to file
+app.use(morgan("combined", { stream: accessLogStream }));
+
+// Web Guard By Helmet
 app.use(
-  bodyParser.urlencoded({
-    extended: true,
+  helmet({
+    contentSecurityPolicy: false,
   })
 );
+
+// Form data parser
 app.use(upload.array());
-// app.use(helmet());
-app.use(logger("dev"));
+// Json Parser
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+// Form encoded Parser
+app.use(express.urlencoded({ extended: true }));
+// Cookie parser
 app.use(cookieParser());
+
+// Public folder set up
 app.use(express.static(path.join(__dirname, "public")));
+// Cross-origin resource sharing
 app.use(cors());
-app.use(session(config.session_setting));
+// Flash session
 app.use(flash());
 
+// Routing
 app.use("/", webRouter);
 app.use("/api", apiRouter);
 
