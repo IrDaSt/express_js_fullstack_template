@@ -31,9 +31,14 @@ const formatDate = (date) => {
   return year + "-" + month + "-" + dt;
 };
 
+const generateOTP = () => {
+  return Math.floor(100000 + Math.random() * 900000);
+};
+
 module.exports = {
   emptyOrRows,
   ecryptSHA256,
   encryptMD5,
   formatDate,
+  generateOTP,
 };
