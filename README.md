@@ -1,5 +1,5 @@
 # Express js Full Stack Template
-Express js fullstack template for easier express website development
+Express js full stack template for easier express website development
 
 ```cmd
 # First install node depedencies
