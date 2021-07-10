@@ -1,4 +1,4 @@
-# Express js Fullstack Template
+# Express js Full Stack Template
 Express js fullstack template for easier express website development
 
 ```cmd
