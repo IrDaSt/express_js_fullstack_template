@@ -47,10 +47,13 @@ app.set("view engine", "ejs");
 // Use Morgan Logging system
 if (env.NODE_ENV === "development") {
   console.log("Development mode");
-  app.use(morgan("dev"));
   // Session set up
   // Please use Cookie instead of session for production environment
   app.use(session(config.session_setting));
+  // Flash session
+  app.use(flash());
+  // Dev console logs
+  app.use(morgan("dev"));
 }
 // Stream logs to file
 app.use(morgan("combined", { stream: accessLogStream }));
@@ -75,8 +78,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 // Cross-origin resource sharing
 app.use(cors());
-// Flash session
-app.use(flash());
 
 // Routing
 app.use("/", webRouter);
