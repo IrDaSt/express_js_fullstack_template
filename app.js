@@ -37,7 +37,7 @@ const accessLogStream = rfs.createStream(generator, {
   size: "10M", // rotate every 10 MegaBytes written
   interval: "1d", // rotate daily
   compress: "gzip", // compress rotated files
-  path: path.join(__dirname, "log"), // place access log file to log folder
+  path: path.join(__dirname, "logs"), // place access log file to log folder
 });
 
 // view engine setup
