@@ -6,6 +6,7 @@ const config = {
     user: env.DB_USER || "admin",
     password: env.DB_PASSWORD || "admin",
     database: env.DB_NAME || "express_rest_api",
+    connectTimeout: 10000,
   },
   secret_token: "eheheheh",
   session_secret_key: "secret_session_key",
