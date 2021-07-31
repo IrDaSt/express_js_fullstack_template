@@ -11,6 +11,7 @@ const cors = require("cors");
 const multer = require("multer");
 const bodyParser = require("body-parser");
 const rfs = require("rotating-file-stream");
+const mongoose = require("mongoose");
 
 const webRouter = require("./routes/web");
 const apiRouter = require("./routes/api");
@@ -20,6 +21,14 @@ const helper = require("./helper");
 
 var upload = multer();
 var app = express();
+
+// Connecting to mongo db database
+mongoose.connect(config.mongo.uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+});
 
 // Create a rotating write stream for Logging system
 const generator = (time, index) => {

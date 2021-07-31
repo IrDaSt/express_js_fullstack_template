@@ -27,6 +27,9 @@ const config = {
     MAIL_FROM_ADDRESS: env.MAIL_FROM_ADDRESS,
     MAIL_FROM_NAME: env.MAIL_FROM_NAME,
   },
+  mongo: {
+    uri: env.MONGO_URI,
+  },
 };
 
 module.exports = config;
