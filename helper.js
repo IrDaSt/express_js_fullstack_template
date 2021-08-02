@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const uuid = require("uuid");
 
 function emptyOrRows(rows) {
   if (!rows) {
@@ -32,11 +33,16 @@ const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000);
 };
 
+const generateUUID = () => {
+  return uuid.v4() + Date.now();
+};
+
 module.exports = {
   emptyOrRows,
   ecryptSHA256,
   encryptMD5,
   formatDate,
   generateOTP,
+  generateUUID,
   pad,
 };
