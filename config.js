@@ -1,11 +1,11 @@
-const { env } = require("process");
+require("dotenv").config();
 
 const config = {
   db: {
-    host: env.DB_HOST || "localhost",
-    user: env.DB_USER || "admin",
-    password: env.DB_PASSWORD || "admin",
-    database: env.DB_NAME || "express_rest_api",
+    host: process.env.DB_HOST || "localhost",
+    user: process.env.DB_USER || "admin",
+    password: process.env.DB_PASSWORD || "admin",
+    database: process.env.DB_NAME || "express_rest_api",
     connectTimeout: 10000,
   },
   secret_token: "eheheheh",
@@ -18,17 +18,17 @@ const config = {
     secret: "secret_session_key",
   },
   mail: {
-    MAIL_MAILER: env.MAIL_MAILER,
-    MAIL_HOST: env.MAIL_HOST,
-    MAIL_PORT: env.MAIL_PORT,
-    MAIL_USERNAME: env.MAIL_USERNAME,
-    MAIL_PASSWORD: env.MAIL_PASSWORD,
-    MAIL_ENCRYPTION: env.MAIL_ENCRYPTION,
-    MAIL_FROM_ADDRESS: env.MAIL_FROM_ADDRESS,
-    MAIL_FROM_NAME: env.MAIL_FROM_NAME,
+    MAIL_MAILER: process.env.MAIL_MAILER,
+    MAIL_HOST: process.env.MAIL_HOST,
+    MAIL_PORT: process.env.MAIL_PORT,
+    MAIL_USERNAME: process.env.MAIL_USERNAME,
+    MAIL_PASSWORD: process.env.MAIL_PASSWORD,
+    MAIL_ENCRYPTION: process.env.MAIL_ENCRYPTION,
+    MAIL_FROM_ADDRESS: process.env.MAIL_FROM_ADDRESS,
+    MAIL_FROM_NAME: process.env.MAIL_FROM_NAME,
   },
   mongo: {
-    uri: env.MONGO_URI,
+    uri: process.env.MONGO_URI,
   },
 };
 

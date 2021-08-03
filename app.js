@@ -1,4 +1,4 @@
-const { env } = require("process");
+require("dotenv").config();
 const createError = require("http-errors");
 const express = require("express");
 const path = require("path");
@@ -55,7 +55,7 @@ const accessLogStream = rfs.createStream(generator, {
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-if (env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "development") {
   console.log("Development mode");
   // Session set up
   // Please use Cookie instead of session for production environment
