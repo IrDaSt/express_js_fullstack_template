@@ -1,5 +1,8 @@
 const crypto = require("crypto");
+const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
+const config = require("./config");
+const tokenSecret = config.secret_token;
 
 function emptyOrRows(rows) {
   if (!rows) {
@@ -37,6 +40,15 @@ const generateUUID = () => {
   return uuid.v4() + Date.now();
 };
 
+const getDataFromJwt = (token) => {
+  console.log(token);
+  var data = null;
+  jwt.verify(token, tokenSecret, (err, value) => {
+    data = value.data;
+  });
+  return data;
+};
+
 module.exports = {
   emptyOrRows,
   ecryptSHA256,
@@ -45,4 +57,5 @@ module.exports = {
   generateOTP,
   generateUUID,
   pad,
+  getDataFromJwt,
 };
