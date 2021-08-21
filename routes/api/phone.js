@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const { body, validationResult } = require("express-validator");
 const middleware = require("../../services/middleware");
 const Phones = require("../../models/Phones");
-const { body, validationResult } = require("express-validator");
+const upload = require("../../services/multer");
 
 // GET all phones data
 router.get("/", async (req, res, next) => {
@@ -29,6 +30,7 @@ router.get("/:id", async (req, res, next) => {
 // POST create new phone
 router.post(
   "/",
+  upload.array(),
   body("phone_number").notEmpty().withMessage("phone_number field required"),
   body("phone_area").notEmpty().withMessage("phone_area field required"),
   body("phone_owner").notEmpty().withMessage("phone_owner field required"),
@@ -55,6 +57,7 @@ router.post(
 // POST search phone owner by keyword
 router.post(
   "/search-owner",
+  upload.array(),
   body("keyword").notEmpty().withMessage("keyword field required"),
   async (req, res, next) => {
     const errors = validationResult(req);
@@ -84,6 +87,7 @@ router.post(
 // PUT update phone
 router.put(
   "/:id",
+  upload.array(),
   body("phone_number").notEmpty().withMessage("phone_number field required"),
   body("phone_area").notEmpty().withMessage("phone_area field required"),
   body("phone_owner").notEmpty().withMessage("phone_owner field required"),

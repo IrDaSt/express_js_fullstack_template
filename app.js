@@ -89,7 +89,7 @@ app.use(
 );
 
 // Form data parser
-app.use(upload.array());
+// app.use(upload.array());
 // Json Parser
 app.use(express.json());
 // Form encoded Parser

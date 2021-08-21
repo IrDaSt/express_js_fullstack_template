@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const auth = require("../../services/api/auth.services");
+const upload = require("../../services/multer");
 
 router.post(
   "/login",
@@ -27,6 +28,7 @@ router.post(
 
 router.post(
   "/register",
+  upload.array(),
   body("email")
     .notEmpty()
     .withMessage("email field required")
@@ -49,6 +51,7 @@ router.post(
 
 router.post(
   "/request_email_verification",
+  upload.array(),
   body("email")
     .notEmpty()
     .withMessage("Email field required")
