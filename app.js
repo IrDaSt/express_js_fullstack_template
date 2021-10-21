@@ -25,12 +25,12 @@ var upload = multer();
 var app = express();
 
 // Connecting to mongo db database
-mongoose.connect(config.mongo.uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-});
+// mongoose.connect(config.mongo.uri, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+//   useCreateIndex: true,
+//   useFindAndModify: false,
+// });
 
 // Create a rotating write stream for Logging system
 const generator = (time, index) => {

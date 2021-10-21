@@ -19,14 +19,14 @@ app.set("port", port);
  * Create HTTP/HTTPS server.
  */
 
-if (process.env.NODE_ENV === "development") {
-  var server = http.createServer(app);
-} else if (process.env.NODE_ENV === "production") {
-  var privateKey = fs.readFileSync(process.env.SSL_PRIVATE_KEY, "utf-8");
-  var certificate = fs.readFileSync(process.env.SSL_CERTIFICATE, "utf-8");
-  var credentials = { key: privateKey, cert: certificate };
-  var server = https.createServer(credentials, app);
-}
+// if (process.env.NODE_ENV === "development") {
+var server = http.createServer(app);
+// } else if (process.env.NODE_ENV === "production") {
+//   var privateKey = fs.readFileSync(process.env.SSL_PRIVATE_KEY, "utf-8");
+//   var certificate = fs.readFileSync(process.env.SSL_CERTIFICATE, "utf-8");
+//   var credentials = { key: privateKey, cert: certificate };
+//   var server = https.createServer(credentials, app);
+// }
 
 /**
  * Listen on provided port, on all network interfaces.
