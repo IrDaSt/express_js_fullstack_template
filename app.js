@@ -12,7 +12,7 @@ const multer = require("multer");
 const bodyParser = require("body-parser");
 const rfs = require("rotating-file-stream");
 const mongoose = require("mongoose");
-const sass = require("node-sass");
+// const sass = require("node-sass");
 const fs = require("fs");
 
 const webRouter = require("./routes/web");
