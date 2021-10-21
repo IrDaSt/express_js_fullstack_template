@@ -66,16 +66,17 @@ if (process.env.NODE_ENV === "development") {
   // Dev console logs
   app.use(morgan("dev"));
 
-  const result = sass.renderSync({
-    file: path.join(__dirname, "public/scss/main.scss"),
-    outputStyle: "compressed",
-    outFile: path.join(__dirname, "public/dist/main.css"),
-  });
-  fs.writeFile(
-    path.join(__dirname, "public/dist/main.css"),
-    result.css,
-    (err) => {}
-  );
+  // NODE SASS Loader
+  // const result = sass.renderSync({
+  //   file: path.join(__dirname, "public/scss/main.scss"),
+  //   outputStyle: "compressed",
+  //   outFile: path.join(__dirname, "public/dist/main.css"),
+  // });
+  // fs.writeFile(
+  //   path.join(__dirname, "public/dist/main.css"),
+  //   result.css,
+  //   (err) => {}
+  // );
 }
 // Use Morgan Logging system
 // Stream logs to file
