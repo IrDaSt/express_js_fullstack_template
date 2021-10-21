@@ -12,7 +12,7 @@ const multer = require("multer");
 const bodyParser = require("body-parser");
 const rfs = require("rotating-file-stream");
 const mongoose = require("mongoose");
-// const sass = require("node-sass");
+const sass = require("node-sass");
 const fs = require("fs");
 
 const webRouter = require("./routes/web");
@@ -103,16 +103,16 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
 // SASS LOADER
-// const result = sass.renderSync({
-//   file: path.join(__dirname, "public/scss/main.scss"),
-//   outputStyle: "compressed",
-//   outFile: path.join(__dirname, "public/dist/main.css"),
-// });
-// fs.writeFile(
-//   path.join(__dirname, "public/dist/main.css"),
-//   result.css,
-//   (err) => {}
-// );
+const result = sass.renderSync({
+  file: path.join(__dirname, "public/scss/main.scss"),
+  outputStyle: "compressed",
+  outFile: path.join(__dirname, "public/dist/main.css"),
+});
+fs.writeFile(
+  path.join(__dirname, "public/dist/main.css"),
+  result.css,
+  (err) => {}
+);
 
 // Routing
 app.use("/", webRouter);

@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "dev": "SET DEBUG=express-js-fullstack-template:* & nodemon ./bin/www"
+    "dev": "SET DEBUG=express-js-fullstack-template:* & nodemon ./bin/www",
+    "postinstall": "npm rebuild node-sass && npm install --unsafe-perm -f node-sass"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -29,6 +30,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "node-sass": "^6.0.1",
     "nodemon": "^2.0.12"
   }
 }
