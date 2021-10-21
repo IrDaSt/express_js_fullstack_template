@@ -102,18 +102,6 @@ app.use(express.static(path.join(__dirname, "public")));
 // Cross-origin resource sharing
 app.use(cors());
 
-// SASS LOADER
-const result = sass.renderSync({
-  file: path.join(__dirname, "public/scss/main.scss"),
-  outputStyle: "compressed",
-  outFile: path.join(__dirname, "public/dist/main.css"),
-});
-fs.writeFile(
-  path.join(__dirname, "public/dist/main.css"),
-  result.css,
-  (err) => {}
-);
-
 // Routing
 app.use("/", webRouter);
 app.use("/api", apiRouter);
