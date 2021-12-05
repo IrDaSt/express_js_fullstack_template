@@ -68,27 +68,35 @@ const generateOTP = () => {
 const generateUUIDV4 = () => uuid.v4();
 
 const generateToken = (data) => {
-  return jwt.sign({ data }, tokenSecret, { expiresIn: "24h" });
+  const token = jwt.sign(data, tokenSecret, { expiresIn: "24h" });
+  let tokenize =
+    token.substring(0, 40) + generateUUIDV4().slice(-15) + token.substring(40);
+  return tokenize;
 };
 
-const getDataFromJwt = (token) => {
-  // console.log(token);
+const getDataFromJwt = (req) => {
+  const bearerString = req.headers.authorization;
+  const token = bearerString.split(" ")[1];
   var data = null;
-  jwt.verify(token, tokenSecret, (err, value) => {
-    data = value.data;
-  });
+  jwt.verify(
+    token.substring(0, 40) + token.substring(40 + 15),
+    config.secret_token,
+    (err, value) => {
+      data = value.data;
+    }
+  );
   return data;
 };
 
 const responseCustom = ({
   status_code = 200,
-  success_status = "success",
+  status_message = "success",
   data = null,
   error = null,
 }) => {
   const response = new Object();
   response.status_code = status_code;
-  response.success_status = success_status;
+  response.status_message = status_message;
   if (data) response.data = data;
   if (error) response.error = error;
   return response;

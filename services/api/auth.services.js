@@ -3,56 +3,29 @@ const helper = require("../../helper");
 const config = require("../../config");
 const nodemailer = require("../nodemailer");
 const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
 const ejs = require("ejs");
-const secretToken = config.secret_token;
 
-const login = async (req) => {
-  const password = helper.encryptMD5(req.body.password);
+const login = async ({ email, hashed_password }) => {
   const rows = await db.query(
-    "select * from akun where email=? and password=?",
-    [req.body.email, password]
+    "select * from user where email=? and password=?",
+    [email, hashed_password]
   );
-  if (rows) {
-    const token = generateToken(rows);
-    return {
-      message: "Login success",
-      token,
-    };
-  }
-  return {
-    message: "Login failed",
-  };
+  return rows;
 };
 
-const register = async (req) => {
-  const checkEmail = await db.query(`select * from akun where email=?`, [
-    req.body.email,
-  ]);
-  if (checkEmail.length) {
-    return {
-      message: "Email already taken",
-    };
-  }
-  const password = helper.ecryptSHA256(req.body.password);
+const register = async ({ id_user, email, hashed_password, name }) => {
   const resultInsert = await db.query(
-    `insert into akun(username, email, password, name, gender) values (?,?,?,?,?)`,
-    [req.body.email, req.body.email, password, req.body.name, req.body.gender]
+    `insert into akun(id_user, email, password, name) values (?,?,?,?)`,
+    [id_user, email, hashed_password, name]
   );
-  if (!resultInsert.affectedRows) {
-    return {
-      message: "Register failed",
-    };
-  }
-  const rows = await db.query(
-    "select * from akun where email=? and password=?",
-    [req.body.email, password]
-  );
-  const token = generateToken(rows);
-  return {
-    message: "Register success",
-    token,
-  };
+  return resultInsert;
+};
+
+const checkEmail = async (email) => {
+  const checkEmail = await db.query(`select * from akun where email=?`, [
+    email,
+  ]);
+  return checkEmail;
 };
 
 const userData = (req) => {
@@ -130,13 +103,10 @@ const requestVerification = async (req) => {
   }
 };
 
-const generateToken = (user) => {
-  return jwt.sign({ data: user }, secretToken, { expiresIn: "24h" });
-};
-
 module.exports = {
   login,
   register,
+  checkEmail,
   userData,
   requestVerification,
 };
