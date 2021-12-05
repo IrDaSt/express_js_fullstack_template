@@ -1,6 +1,7 @@
 const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
+const fse = require("fs-extra");
 const config = require("./config");
 const tokenSecret = config.secret_token;
 
@@ -64,9 +65,7 @@ const generateOTP = () => {
   return Math.floor(100000 + Math.random() * 900000);
 };
 
-const generateUUID = () => {
-  return uuid.v4() + Date.now();
-};
+const generateUUIDV4 = () => uuid.v4();
 
 const generateToken = (data) => {
   return jwt.sign({ data }, tokenSecret, { expiresIn: "24h" });
@@ -81,6 +80,25 @@ const getDataFromJwt = (token) => {
   return data;
 };
 
+const responseCustom = ({
+  status_code = 200,
+  success_status = "success",
+  data = null,
+  error = null,
+}) => {
+  const response = new Object();
+  response.status_code = status_code;
+  response.success_status = success_status;
+  if (data) response.data = data;
+  if (error) response.error = error;
+  return response;
+};
+
+const deleteAllTempUpload = () => {
+  // Delete all temp uploaded file
+  fse.emptyDirSync("./public/uploads/temp");
+};
+
 module.exports = {
   emptyOrRows,
   ecryptSHA256,
@@ -90,8 +108,10 @@ module.exports = {
   getDateDiff,
   formatTimeISO12HR,
   generateOTP,
-  generateUUID,
+  generateUUIDV4,
   pad,
   generateToken,
   getDataFromJwt,
+  responseCustom,
+  deleteAllTempUpload,
 };

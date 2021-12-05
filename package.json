@@ -6,8 +6,8 @@
     "start": "node ./bin/www",
     "dev": "SET DEBUG=express-js-fullstack-template:* & nodemon ./bin/www",
     "build": "npm run build:css",
-    "build:css": "node-sass --recursive -o ./public/dist/css ./public/scss/",
-    "build:css:watch": "npm run build:css && node-sass --recursive -wo ./public/dist/css ./public/scss/"
+    "build:css": "node-sass --recursive --output-style compressed -o ./public/dist/css ./public/scss/",
+    "build:css:watch": "npm run build:css && node-sass --recursive --output-style compressed -wo ./public/dist/css ./public/scss/"
   },
   "dependencies": {
     "body-parser": "^1.19.0",
@@ -20,6 +20,7 @@
     "express-flash": "^0.0.2",
     "express-session": "^1.17.2",
     "express-validator": "^6.13.0",
+    "fs-extra": "^10.0.0",
     "helmet": "^4.6.0",
     "http-errors": "^1.8.1",
     "jsonwebtoken": "^8.5.1",
@@ -32,6 +33,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "node-sass": "^6.0.1",
     "nodemon": "^2.0.15"
   }
 }
