@@ -5,6 +5,10 @@ const middleware = require("../../services/middleware");
 const upload = require("../../services/multer");
 const helper = require("../../helper");
 
+/**
+ * This is an example on how to implement mysql query with promise
+ */
+
 // GET all books data
 router.get("/", async (req, res, next) => {
   const { id_book } = req.query;

@@ -5,6 +5,10 @@ const middleware = require("../../services/middleware");
 const Phones = require("../../models/Phones");
 const upload = require("../../services/multer");
 
+/**
+ * This is an example on how to implement mongoose
+ */
+
 // GET all phones data
 router.get("/", async (req, res, next) => {
   try {
