@@ -12,7 +12,7 @@ router.post(
     .notEmpty()
     .withMessage("email field required")
     .isEmail()
-    .withMessage("email field must be and email"),
+    .withMessage("email field must be an email"),
   body("password").notEmpty().withMessage("password field required"),
   async (req, res, next) => {
     const errors = validationResult(req);
@@ -27,21 +27,47 @@ router.post(
 
     const { email, password } = req.body;
     try {
-      const result_login = await authServices.login({
-        email,
-        hashed_password: helper.ecryptSHA256(password),
-      });
-      const token = helper.generateToken({
-        id_user: result_login[0].id_user,
-      });
-      res.status(200).json(
-        helper.responseCustom({
-          data: {
-            message: "login success",
-            token,
-          },
-        })
+      const result_check_email = await authServices.checkEmail(email);
+      if (result_check_email.length === 0) {
+        res.status(500).json(
+          helper.responseCustom({
+            status_code: 500,
+            status_message: "error",
+            error: {
+              message: "login failed",
+            },
+          })
+        );
+        return;
+      }
+
+      const [encrypted_password, salt] = result_check_email[0].password.split(
+        ":"
       );
+
+      if (encrypted_password === helper.encryptWithSalt(password, salt)) {
+        const token = helper.generateToken({
+          id_user: result_login[0].id_user,
+        });
+        res.status(200).json(
+          helper.responseCustom({
+            data: {
+              message: "login success",
+              token,
+            },
+          })
+        );
+      } else {
+        res.status(500).json(
+          helper.responseCustom({
+            status_code: 500,
+            status_message: "error",
+            error: {
+              message: "login failed",
+            },
+          })
+        );
+      }
     } catch (error) {
       res.status(500).json(
         helper.responseCustom({
@@ -91,10 +117,11 @@ router.post(
         );
         return;
       }
+      const salt = helper.generateSalt();
       const result_register = await authServices.register({
         id_user: helper.generateUUIDV4(),
         email,
-        hashed_password: helper.ecryptSHA256(password),
+        hashed_password: `${helper.encryptWithSalt(password, salt)}:${salt}`,
         name,
       });
       if (!result_register.affectedRows) {

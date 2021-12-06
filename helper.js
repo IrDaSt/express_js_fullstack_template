@@ -12,6 +12,11 @@ function emptyOrRows(rows) {
   return rows;
 }
 
+const generateSalt = () => crypto.randomBytes(12).toString("hex");
+
+const encryptWithSalt = (text, salt) =>
+  crypto.createHmac("sha256", salt).update(text).digest("hex");
+
 const ecryptSHA256 = (text) => {
   return crypto.createHash("sha256").update(text).digest("hex");
 };
@@ -109,6 +114,8 @@ const deleteAllTempUpload = () => {
 
 module.exports = {
   emptyOrRows,
+  generateSalt,
+  encryptWithSalt,
   ecryptSHA256,
   encryptMD5,
   formatDate,
