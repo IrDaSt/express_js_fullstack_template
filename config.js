@@ -4,9 +4,9 @@ const config = {
   db: {
     host: process.env.DB_HOST || "localhost",
     user: process.env.DB_USER || "admin",
+    port: process.env.DB_PORT || 3306,
     password: process.env.DB_PASSWORD || "admin",
     database: process.env.DB_NAME || "express_rest_api",
-    connectTimeout: 10000,
   },
   secret_token: "eheheheh",
   session_secret_key: "secret_session_key",
