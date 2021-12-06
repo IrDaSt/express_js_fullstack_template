@@ -5,21 +5,13 @@ const config = require("../../config");
 // all books
 const getAll = async () => {
   const rows = await db.query(`select * from books`);
-  const data = helper.emptyOrRows(rows);
-
-  return {
-    data,
-  };
+  return rows;
 };
 
 // book by id
-const getById = async (id) => {
-  const rows = await db.query("Select * from books where id=?", [id]);
-  const data = helper.emptyOrRows(rows);
-
-  return {
-    data,
-  };
+const getById = async (id_book) => {
+  const rows = await db.query("Select * from books where id_book=?", [id_book]);
+  return rows;
 };
 
 // create book

@@ -1,15 +1,39 @@
 const express = require("express");
 const router = express.Router();
-const books = require("../../services/api/books.services");
+const booksServices = require("../../services/api/books.services");
 const middleware = require("../../services/middleware");
 const upload = require("../../services/multer");
+const helper = require("../../helper");
 
 // GET all books data
 router.get("/", async (req, res, next) => {
+  const { id_book } = req.query;
   try {
-    res.json(await books.getAll());
+    if (id_book) {
+      // GET book data by id_book
+      const book = await booksServices.getById(id_book);
+      res.json(
+        helper.responseCustom({
+          data: book[0],
+        })
+      );
+    } else {
+      // GET all books data
+      const books = await booksServices.getAll();
+      res.json(
+        helper.responseCustom({
+          data: books,
+        })
+      );
+    }
   } catch (error) {
-    console.error(`Error getting books data `, error.message);
+    res.status(500).json(
+      helper.responseCustom({
+        status_message: "error",
+        status_code: 500,
+        error: error,
+      })
+    );
     next(error);
   }
 });
@@ -17,7 +41,7 @@ router.get("/", async (req, res, next) => {
 // GET book data by id
 router.get("/:id", async (req, res, next) => {
   try {
-    res.json(await books.getById(req.params.id));
+    res.json(await booksServices.getById(req.params.id));
   } catch (error) {
     console.error(`Error getting book data `, error.message);
     next(error);
@@ -31,7 +55,7 @@ router.post(
   middleware.verifyToken,
   async (req, res, next) => {
     try {
-      res.json(await books.create(req.body));
+      res.json(await booksServices.create(req.body));
     } catch (error) {
       console.error(`Error creating books data `, error.message);
       next(error);
@@ -46,7 +70,7 @@ router.put(
   middleware.verifyToken,
   async (req, res, next) => {
     try {
-      res.json(await books.update(req.params.id, req.body));
+      res.json(await booksServices.update(req.params.id, req.body));
     } catch (error) {
       console.error(`Error updating books data `, error.message);
       next(error);
@@ -57,7 +81,7 @@ router.put(
 // DELETE book by id
 router.delete("/:id", middleware.verifyToken, async (req, res, next) => {
   try {
-    res.json(await books.remove(req.params.id));
+    res.json(await booksServices.remove(req.params.id));
   } catch (error) {
     console.error(`Error deleting books data `, error.message);
     next(error);
