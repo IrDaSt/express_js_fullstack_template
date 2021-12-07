@@ -109,7 +109,7 @@ const responseCustom = ({
 
 const deleteAllTempUpload = () => {
   // Delete all temp uploaded file
-  fse.emptyDirSync("./public/uploads/temp");
+  fse.emptyDirSync("./public/data/uploads/temp");
 };
 
 const helper = {
