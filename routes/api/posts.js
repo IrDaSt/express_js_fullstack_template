@@ -4,6 +4,7 @@ const { body, validationResult, query } = require("express-validator");
 const upload = require("../../services/multer");
 const helper = require("../../helper");
 const postsServices = require("../../services/api/posts.services");
+const exceptions = require("../../exceptions");
 
 router.get("/", async (req, res, next) => {
   const { id_post } = req.query;
@@ -24,14 +25,7 @@ router.get("/", async (req, res, next) => {
       );
     }
   } catch (error) {
-    res.status(500).json(
-      helper.responseCustom({
-        status_message: "error",
-        status_code: 500,
-        error: error,
-      })
-    );
-    next(error);
+    exceptions.InternalServerError(res, error);
   }
 });
 
@@ -42,13 +36,7 @@ router.post(
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json(
-        helper.responseCustom({
-          status_message: "error",
-          status_code: 400,
-          error: errors.array(),
-        })
-      );
+      return exceptions.BadRequest(res, errors.array());
     }
 
     const { title_post, description_post } = req.body;
@@ -62,14 +50,7 @@ router.post(
         data: result_insert_post,
       });
     } catch (error) {
-      res.status(500).json(
-        helper.responseCustom({
-          status_message: "error",
-          status_code: 500,
-          error: error,
-        })
-      );
-      next(error);
+      exceptions.InternalServerError(res, error);
     }
   }
 );
@@ -81,13 +62,7 @@ router.put(
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json(
-        helper.responseCustom({
-          status_message: "error",
-          status_code: 400,
-          error: errors.array(),
-        })
-      );
+      return exceptions.BadRequest(res, errors.array());
     }
 
     const { id_post } = req.query;
@@ -118,14 +93,7 @@ router.put(
         );
       }
     } catch (error) {
-      res.status(500).json(
-        helper.responseCustom({
-          status_message: "error",
-          status_code: 500,
-          error: error,
-        })
-      );
-      next(error);
+      exceptions.InternalServerError(res, error);
     }
   }
 );
@@ -136,13 +104,7 @@ router.delete(
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json(
-        helper.responseCustom({
-          status_message: "error",
-          status_code: 400,
-          error: errors.array(),
-        })
-      );
+      return exceptions.BadRequest(res, errors.array());
     }
 
     const { id_post } = req.query;
@@ -156,25 +118,12 @@ router.delete(
           })
         );
       } else {
-        res.status(500).json(
-          helper.responseCustom({
-            status_code: 500,
-            status_message: "error",
-            error: {
-              message: "post not found",
-            },
-          })
-        );
+        exceptions.NotFound(res, {
+          message: "post not found",
+        });
       }
     } catch (error) {
-      res.status(500).json(
-        helper.responseCustom({
-          status_message: "error",
-          status_code: 500,
-          error: error,
-        })
-      );
-      next(error);
+      exceptions.InternalServerError(res, error);
     }
   }
 );
