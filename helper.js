@@ -112,7 +112,7 @@ const deleteAllTempUpload = () => {
   fse.emptyDirSync("./public/uploads/temp");
 };
 
-module.exports = {
+const helper = {
   emptyOrRows,
   generateSalt,
   encryptWithSalt,
@@ -130,3 +130,5 @@ module.exports = {
   responseCustom,
   deleteAllTempUpload,
 };
+
+module.exports = helper;
