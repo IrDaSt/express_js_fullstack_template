@@ -87,7 +87,7 @@ const getDataFromJwt = (req) => {
     token.substring(0, 40) + token.substring(40 + 15),
     config.secret_token,
     (err, value) => {
-      data = value.data;
+      data = value;
     }
   );
   return data;
