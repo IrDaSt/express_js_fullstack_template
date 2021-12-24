@@ -52,10 +52,12 @@ const deleteOneById = async (id_post) => {
   };
 };
 
-module.exports = {
+const postsServices = {
   getAllPosts,
   getOnePostById,
   create,
   update,
   deleteOneById,
 };
+
+module.exports = postsServices;

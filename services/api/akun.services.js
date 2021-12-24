@@ -4,29 +4,7 @@ const config = require("../../config");
 const jwt = require("jsonwebtoken");
 
 const userData = (req) => {
-  const bearerString = req.headers.authorization;
-  const token = bearerString.split(" ")[1];
-  var data = null;
-  jwt.verify(token, config.secret_token, (err, value) => {
-    console.log(data);
-    data = value.data[0];
-  });
-  data = {
-    username: data.username,
-    email: data.email,
-    nama: data.nama,
-    gender: data.gander,
-    telp: data.telp,
-    perusahaan: data.perusahaan,
-    instansi: data.instansi,
-    level: data.lavel,
-    resetP: data.resetP,
-    tgl_lahir: data.tgl_lahir,
-    foto: data.foto,
-    ktp: data.ktp,
-    verifikasi: data.verifikasi,
-    foto_ktp: data.foto_ktp,
-  };
+  var data = helper.getDataFromJwt(req);
   return {
     data,
   };
@@ -76,7 +54,9 @@ const editUser = async (reqBody) => {
   };
 };
 
-module.exports = {
+const akunServices = {
   userData,
   editUser,
 };
+
+module.exports = akunServices;

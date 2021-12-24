@@ -1,12 +1,12 @@
 const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
-const akun = require("../../services/api/akun.services");
+const akunServices = require("../../services/api/akun.services");
 const middleware = require("../../services/middleware");
 const upload = require("../../services/multer");
 
-router.get("/", middleware.verifyToken, async (req, res, next) => {
-  return res.json(await akun.userData(req));
+router.get("/", middleware.verifyToken, (req, res, next) => {
+  return res.json(akunServices.userData(req));
 });
 
 router.put(
@@ -14,7 +14,7 @@ router.put(
   upload.array(),
   middleware.verifyToken,
   async (req, res, next) => {
-    return res.json(await akun.editUser(req.body));
+    return res.json(await akunServices.editUser(req.body));
   }
 );
 

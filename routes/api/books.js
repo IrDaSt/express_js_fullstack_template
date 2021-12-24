@@ -4,6 +4,7 @@ const booksServices = require("../../services/api/books.services");
 const middleware = require("../../services/middleware");
 const upload = require("../../services/multer");
 const helper = require("../../helper");
+const exceptions = require("../../exceptions");
 
 /**
  * This is an example on how to implement mysql query with promise
@@ -31,14 +32,7 @@ router.get("/", async (req, res, next) => {
       );
     }
   } catch (error) {
-    res.status(500).json(
-      helper.responseCustom({
-        status_message: "error",
-        status_code: 500,
-        error: error,
-      })
-    );
-    next(error);
+    return exceptions.InternalServerError(res, error);
   }
 });
 
@@ -47,8 +41,9 @@ router.get("/:id", async (req, res, next) => {
   try {
     res.json(await booksServices.getById(req.params.id));
   } catch (error) {
-    console.error(`Error getting book data `, error.message);
-    next(error);
+    return exceptions.InternalServerError(res, {
+      message: `Error getting book data ` + error.message,
+    });
   }
 });
 
@@ -61,8 +56,9 @@ router.post(
     try {
       res.json(await booksServices.create(req.body));
     } catch (error) {
-      console.error(`Error creating books data `, error.message);
-      next(error);
+      return exceptions.InternalServerError(res, {
+        message: `Error creating book data ` + error.message,
+      });
     }
   }
 );
@@ -76,8 +72,9 @@ router.put(
     try {
       res.json(await booksServices.update(req.params.id, req.body));
     } catch (error) {
-      console.error(`Error updating books data `, error.message);
-      next(error);
+      return exceptions.InternalServerError(res, {
+        message: `Error updating book data ` + error.message,
+      });
     }
   }
 );
@@ -87,8 +84,9 @@ router.delete("/:id", middleware.verifyToken, async (req, res, next) => {
   try {
     res.json(await booksServices.remove(req.params.id));
   } catch (error) {
-    console.error(`Error deleting books data `, error.message);
-    next(error);
+    return exceptions.InternalServerError(res, {
+      message: `Error deleting book data ` + error.message,
+    });
   }
 });
 

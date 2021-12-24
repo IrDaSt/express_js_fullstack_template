@@ -8,6 +8,15 @@ const config = {
     password: process.env.DB_PASSWORD || "admin",
     database: process.env.DB_NAME || "express_rest_api",
   },
+  database: {
+    1: {
+      host: process.env.DB_HOST || "localhost",
+      user: process.env.DB_USER || "admin",
+      port: process.env.DB_PORT || 3306,
+      password: process.env.DB_PASSWORD || "admin",
+      database: process.env.DB_NAME || "express_rest_api",
+    },
+  },
   secret_token: "eheheheh",
   session_secret_key: "secret_session_key",
   session_setting: {

@@ -7,4 +7,8 @@ const getAllUsers = async () => {
   return rowsUsers;
 };
 
-module.exports = { getAllUsers };
+const userServices = {
+  getAllUsers,
+};
+
+module.exports = userServices;

@@ -51,10 +51,12 @@ const remove = async (id) => {
   return { message };
 };
 
-module.exports = {
+const booksServices = {
   getAll,
   getById,
   create,
   update,
   remove,
 };
+
+module.exports = booksServices;

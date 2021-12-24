@@ -8,7 +8,7 @@ const verifyToken = (req, res, next) => {
   if (!token)
     res.status(403).json(
       helper.responseCustom({
-        status_message: "success",
+        status_message: "error",
         errors: { message: "Please provide a bearer token authorization" },
       })
     );
@@ -33,6 +33,8 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-module.exports = {
+const middleware = {
   verifyToken,
 };
+
+module.exports = middleware;

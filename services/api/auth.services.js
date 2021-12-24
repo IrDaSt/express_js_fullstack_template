@@ -5,6 +5,11 @@ const nodemailer = require("../nodemailer");
 const jwt = require("jsonwebtoken");
 const ejs = require("ejs");
 
+const getByIdUser = async (id_user) => {
+  const rows = await db.query(`select * from user where id_user=?`, [id_user]);
+  return rows;
+};
+
 const login = async ({ email, hashed_password }) => {
   const rows = await db.query(
     "select * from user where email=? and password=?",
@@ -29,29 +34,7 @@ const checkEmail = async (email) => {
 };
 
 const userData = (req) => {
-  const bearerString = req.headers.authorization;
-  const token = bearerString.split(" ")[1];
-  var data = null;
-  jwt.verify(token, config.secret_token, (err, value) => {
-    console.log(data);
-    data = value.data[0];
-  });
-  data = {
-    username: data.username,
-    email: data.email,
-    nama: data.nama,
-    gender: data.gander,
-    telp: data.telp,
-    perusahaan: data.perusahaan,
-    instansi: data.instansi,
-    level: data.lavel,
-    resetP: data.resetP,
-    tgl_lahir: data.tgl_lahir,
-    foto: data.foto,
-    ktp: data.ktp,
-    verifikasi: data.verifikasi,
-    foto_ktp: data.foto_ktp,
-  };
+  var data = helper.getDataFromJwt(req);
   return {
     data,
   };
@@ -103,10 +86,13 @@ const requestVerification = async (req) => {
   }
 };
 
-module.exports = {
+const authServices = {
+  getByIdUser,
   login,
   register,
   checkEmail,
   userData,
   requestVerification,
 };
+
+module.exports = authServices;

@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
 const config = require("../config");
 
+// Handle email sender with nodemailer
 const transporter = nodemailer.createTransport({
   host: config.mail.MAIL_HOST,
   port: config.mail.MAIL_PORT,
