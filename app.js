@@ -13,12 +13,14 @@ const bodyParser = require("body-parser");
 const rfs = require("rotating-file-stream");
 const mongoose = require("mongoose");
 const fs = require("fs");
+const swaggerUi = require("swagger-ui-express");
 
 const webRouter = require("./routes/web");
 const apiRouter = require("./routes/api");
 
 const config = require("./config");
 const helper = require("./helper");
+const swaggerConfig = require("./swagger-config");
 
 var upload = multer();
 var app = express();
@@ -89,6 +91,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 // Cross-origin resource sharing
 app.use(cors());
+
+// Swagger UI
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup({ ...swaggerConfig }, { explorer: false })
+);
 
 // Routing
 app.use("/", webRouter);
