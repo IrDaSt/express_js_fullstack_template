@@ -18,14 +18,16 @@ const config = {
       database: process.env.DB_NAME || "express_rest_api",
     },
   },
-  secret_token: "eheheheh",
-  session_secret_key: "secret_session_key",
+  secret_token: process.env.JWT_SECRET || "secret_token_express_fullstack",
+  session_secret_key:
+    process.env.SESSION_SECRET || "secret_session_key_express_fullstack",
   session_setting: {
     cookie: { maxAge: 1000 * 60 * 60 * 24 }, // a day in milliseconds
     // store: new session.MemoryStore(),
     saveUninitialized: true,
     resave: true,
-    secret: "secret_session_key",
+    secret:
+      process.env.SESSION_SECRET || "secret_session_key_express_fullstack",
   },
   mail: {
     MAIL_MAILER: process.env.MAIL_MAILER,

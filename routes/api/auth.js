@@ -5,7 +5,7 @@ const authServices = require("../../services/api/auth.services");
 const upload = require("../../services/multer");
 const helper = require("../../helper");
 const middleware = require("../../services/middleware");
-const exceptions = require("../../exceptions");
+const responses = require("../../responses");
 
 // Get User Information
 router.get("/info", middleware.verifyToken, async (req, res, next) => {
@@ -15,13 +15,9 @@ router.get("/info", middleware.verifyToken, async (req, res, next) => {
     // Get user info with id_user from jwt data
     const result_user_info = await authServices.getByIdUser(jwtData.id_user);
 
-    res.status(200).json(
-      helper.responseCustom({
-        data: result_user_info[0],
-      })
-    );
+    responses.Success(res, result_user_info[0]);
   } catch (error) {
-    return exceptions.InternalServerError(res, error);
+    return responses.InternalServerError(res, error);
   }
 });
 
@@ -37,14 +33,14 @@ router.post(
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return exceptions.BadRequest(res, errors.array());
+      return responses.BadRequest(res, errors.array());
     }
 
     const { email, password } = req.body;
     try {
       const result_check_email = await authServices.checkEmail(email);
       if (result_check_email.length === 0) {
-        return exceptions.InternalServerError(res, {
+        return responses.InternalServerError(res, {
           message: "login failed",
         });
       }
@@ -56,21 +52,17 @@ router.post(
         const token = helper.generateToken({
           id_user: result_login[0].id_user,
         });
-        res.status(200).json(
-          helper.responseCustom({
-            data: {
-              message: "login success",
-              token,
-            },
-          })
-        );
+        responses.Success(res, {
+          message: "login success",
+          token,
+        });
       } else {
-        return exceptions.InternalServerError(res, {
+        return responses.InternalServerError(res, {
           message: "login failed",
         });
       }
     } catch (error) {
-      return exceptions.InternalServerError(res, error);
+      return responses.InternalServerError(res, error);
     }
   }
 );
@@ -88,14 +80,14 @@ router.post(
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return exceptions.BadRequest(res, errors.array());
+      return responses.BadRequest(res, errors.array());
     }
 
     const { email, password, name } = req.body;
     try {
       const result_check_email = await authServices.checkEmail(email);
       if (result_check_email.length > 0) {
-        return exceptions.InternalServerError(res, {
+        return responses.InternalServerError(res, {
           message: "email already used",
         });
       }
@@ -107,23 +99,19 @@ router.post(
         name,
       });
       if (!result_register.affectedRows) {
-        return exceptions.InternalServerError(res, {
+        return responses.InternalServerError(res, {
           message: "database error",
         });
       }
       const token = helper.generateToken({
         id_user: result_register.insertId,
       });
-      res.status(200).json(
-        helper.responseCustom({
-          data: {
-            message: "register success",
-            token,
-          },
-        })
-      );
+      responses.Success(res, {
+        message: "register success",
+        token,
+      });
     } catch (error) {
-      return exceptions.InternalServerError(res, error);
+      return responses.InternalServerError(res, error);
     }
   }
 );
@@ -139,12 +127,12 @@ router.post(
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return exceptions.BadRequest(res, errors.array());
+      return responses.BadRequest(res, errors.array());
     }
     try {
       res.json(await auth.requestVerification(req));
     } catch (error) {
-      return exceptions.InternalServerError(res, error);
+      return responses.InternalServerError(res, error);
     }
   }
 );

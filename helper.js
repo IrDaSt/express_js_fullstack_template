@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
 const fse = require("fs-extra");
 const config = require("./config");
-const tokenSecret = config.secret_token;
 
 function emptyOrRows(rows) {
   if (!rows) {
@@ -73,7 +72,7 @@ const generateOTP = () => {
 const generateUUIDV4 = () => uuid.v4();
 
 const generateToken = (data) => {
-  const token = jwt.sign(data, tokenSecret, { expiresIn: "24h" });
+  const token = jwt.sign(data, config.secret_token, { expiresIn: "24h" });
   let tokenize =
     token.substring(0, 40) + generateUUIDV4().slice(-15) + token.substring(40);
   return tokenize;
