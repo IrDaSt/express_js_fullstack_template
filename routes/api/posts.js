@@ -11,7 +11,13 @@ router.get("/", async (req, res, next) => {
   try {
     if (id_post) {
       const post = await postsServices.getOnePostById(id_post);
-      return responses.Success(res, post);
+      if (post) {
+        return responses.Success(res, post);
+      } else {
+        return responses.NotFound(res, {
+          message: "post not found",
+        });
+      }
     } else {
       const posts = await postsServices.getAllPosts();
       return responses.Success(res, posts);
@@ -34,7 +40,6 @@ router.post(
     const { title_post, description_post } = req.body;
     try {
       const result_insert_post = await postsServices.create({
-        id_post: helper.generateUUIDV4(),
         title_post,
         description_post: description_post ?? null,
       });
