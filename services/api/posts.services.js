@@ -1,4 +1,4 @@
-const Posts = require("../../entities/Posts.entity");
+const Posts = require("../entities/Posts.entity");
 const helper = require("../../helper");
 const TypeOrmConnection = require("../typeorm");
 const typeormconn = new TypeOrmConnection();

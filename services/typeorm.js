@@ -1,6 +1,6 @@
 const typeorm = require("typeorm");
 const config = require("../config");
-const Posts = require("../entities/Posts.entity");
+const Posts = require("./entities/Posts.entity");
 
 const connection1 = typeorm.createConnection({
   type: "mariadb",
