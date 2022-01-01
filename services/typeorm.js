@@ -28,4 +28,6 @@ class TypeOrmConnection {
   }
 }
 
-module.exports = TypeOrmConnection;
+const typeormconn = new TypeOrmConnection();
+
+module.exports = typeormconn;

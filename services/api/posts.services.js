@@ -1,7 +1,6 @@
 const Posts = require("../entities/Posts.entity");
 const helper = require("../../helper");
-const TypeOrmConnection = require("../typeorm");
-const typeormconn = new TypeOrmConnection();
+const typeormconn = require("../typeorm");
 
 const getAllPosts = async () => {
   const result = await typeormconn.connection1.getRepository(Posts).find();
