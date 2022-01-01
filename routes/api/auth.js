@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const authServices = require("../../services/api/auth.services");
-const upload = require("../../services/multer");
+const upload = require("../../middlewares/multer");
 const helper = require("../../helper");
-const middleware = require("../../services/middleware");
+const authMiddleware = require("../../middlewares/auth");
 const responses = require("../../responses");
 
 // This is an example on how to implement authentication
@@ -12,7 +12,7 @@ const responses = require("../../responses");
 // You can use another tools to interact with database eg. typeorm, mongoose, mysql2, and more.
 
 // Get User Information
-router.get("/info", middleware.verifyToken, async (req, res, next) => {
+router.get("/info", authMiddleware.verifyToken, async (req, res, next) => {
   try {
     // Get Jwt Data
     // You can use either using helper.getDataFromJwt or from req.user

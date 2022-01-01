@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { body, validationResult, query } = require("express-validator");
-const upload = require("../../services/multer");
+const upload = require("../../middlewares/multer");
 const helper = require("../../helper");
 const postsServices = require("../../services/api/posts.services");
 const responses = require("../../responses");

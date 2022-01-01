@@ -26,8 +26,8 @@ const verifyToken = (req, res, next) => {
   }
 };
 
-const middleware = {
+const authMiddleware = {
   verifyToken,
 };
 
-module.exports = middleware;
+module.exports = authMiddleware;

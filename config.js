@@ -42,6 +42,10 @@ const config = {
   mongo: {
     uri: process.env.MONGO_URI,
   },
+  cookie_config: {
+    domain: process.env.COOKIE_DOMAIN,
+    path: "/",
+  },
 };
 
 module.exports = config;

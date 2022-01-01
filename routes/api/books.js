@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const booksServices = require("../../services/api/books.services");
-const middleware = require("../../services/middleware");
-const upload = require("../../services/multer");
+const authMiddleware = require("../../middlewares/auth");
+const upload = require("../../middlewares/multer");
 const helper = require("../../helper");
 const responses = require("../../responses");
 
@@ -43,7 +43,7 @@ router.get("/:id", async (req, res, next) => {
 router.post(
   "/",
   upload.array(),
-  middleware.verifyToken,
+  authMiddleware.verifyToken,
   async (req, res, next) => {
     try {
       res.json(await booksServices.create(req.body));
@@ -59,7 +59,7 @@ router.post(
 router.put(
   "/:id",
   upload.array(),
-  middleware.verifyToken,
+  authMiddleware.verifyToken,
   async (req, res, next) => {
     try {
       res.json(await booksServices.update(req.params.id, req.body));
@@ -72,7 +72,7 @@ router.put(
 );
 
 // DELETE book by id
-router.delete("/:id", middleware.verifyToken, async (req, res, next) => {
+router.delete("/:id", authMiddleware.verifyToken, async (req, res, next) => {
   try {
     res.json(await booksServices.remove(req.params.id));
   } catch (error) {

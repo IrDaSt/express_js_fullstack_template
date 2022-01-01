@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator");
-const middleware = require("../../services/middleware");
+const middleware = require("../../middlewares/auth");
 const Phones = require("../../models/Phones");
-const upload = require("../../services/multer");
+const upload = require("../../middlewares/multer");
 
 /**
  * This is an example on how to implement mongoose

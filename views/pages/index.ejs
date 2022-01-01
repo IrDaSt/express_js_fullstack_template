@@ -3,6 +3,7 @@
 
 <head>
   <%- include('../components/head.ejs') %>
+  <%- include("../components/scripts.ejs") %>
 </head>
 
 <body class="mb-5">
@@ -11,10 +12,13 @@
     <h1>
       Welcome to <%= title %> Template Example
     </h1>
+    <h1>Current time <span class="current-time"></span></h1>
   </div>
   <%- include("../components/footer.ejs") %>
 
-  <%- include("../components/scripts.ejs") %>
+  <script>
+    $('.current-time').html(`${moment().format('DD-MM-YYYY')}`);
+  </script>
 </body>
 
 </html>
