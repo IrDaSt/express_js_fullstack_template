@@ -7,11 +7,20 @@ const helper = require("../../helper");
 const middleware = require("../../services/middleware");
 const responses = require("../../responses");
 
+// This is an example on how to implement authentication
+// This example uses mysql query to interact with database
+// You can use another tools to interact with database eg. typeorm, mongoose, mysql2, and more.
+
 // Get User Information
 router.get("/info", middleware.verifyToken, async (req, res, next) => {
   try {
     // Get Jwt Data
-    const jwtData = helper.getDataFromJwt(req);
+    // You can use either using helper.getDataFromJwt or from req.user
+    // Example with using req.user
+    const jwtData = req.user;
+    // Example with using helper.getDataFromJwt
+    // const jwtData = helper.getDataFromJwt(req);
+
     // Get user info with id_user from jwt data
     const result_user_info = await authServices.getByIdUser(jwtData.id_user);
 

@@ -6,6 +6,9 @@ const helper = require("../../helper");
 const postsServices = require("../../services/api/posts.services");
 const responses = require("../../responses");
 
+// This is an example best practices by using services as database interactions
+// The database uses typeorm as it's engine
+
 router.get("/", async (req, res, next) => {
   const { id_post } = req.query;
   try {
