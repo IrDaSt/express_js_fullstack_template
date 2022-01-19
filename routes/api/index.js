@@ -1,17 +1,17 @@
 const express = require("express");
 const router = express.Router();
 
-const booksRouter = require("./books");
-const authRouter = require("./auth");
+const booksRouterApi = require("./books");
 const akunRouter = require("./akun");
-const phoneRouter = require("./phone");
-const PostsRouter = require("./posts");
+const phoneRouterApi = require("./phone");
+const postsRouterApi = require("./posts");
+const authRouterApi = require("./auth");
 
-router.use("/books", booksRouter);
-router.use("/auth", authRouter);
+router.use("/books", booksRouterApi);
+router.use("/auth", authRouterApi);
 router.use("/akun", akunRouter);
-router.use("/phone", phoneRouter);
-router.use("/posts", PostsRouter);
+router.use("/phone", phoneRouterApi);
+router.use("/posts", postsRouterApi);
 
 router.get("/", (req, res, next) => {
   res.send("Welcome to the api");

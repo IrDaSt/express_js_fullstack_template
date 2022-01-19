@@ -1,7 +1,6 @@
 const jwt = require("jsonwebtoken");
-const config = require("../config");
-const helper = require("../helper");
-const responses = require("../responses");
+const config = require("../constants/config");
+const responses = require("../utilities/responses");
 
 const verifyToken = (req, res, next) => {
   const authorization = req.headers.authorization;

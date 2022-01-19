@@ -1,4 +1,4 @@
-const config = require("./config");
+const config = require("../constants/config");
 
 /**
  * For more OpenAPI 3.0 documentation,

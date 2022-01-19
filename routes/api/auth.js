@@ -1,36 +1,40 @@
 const express = require("express");
-const router = express.Router();
 const { body, validationResult } = require("express-validator");
 const authServices = require("../../services/api/auth.services");
 const upload = require("../../middlewares/multer");
-const helper = require("../../helper");
 const authMiddleware = require("../../middlewares/auth");
-const responses = require("../../responses");
+const cryptoUtils = require("../../utilities/crypto");
+const jwtUtils = require("../../utilities/jsonwebtoken");
+const responses = require("../../utilities/responses");
+const idGeneratorUtils = require("../../utilities/id-generator");
+
+const authRouterApi = express.Router();
 
 // This is an example on how to implement authentication
 // This example uses mysql query to interact with database
 // You can use another tools to interact with database eg. typeorm, mongoose, mysql2, and more.
 
 // Get User Information
-router.get("/info", authMiddleware.verifyToken, async (req, res, next) => {
-  try {
-    // Get Jwt Data
-    // You can use either using helper.getDataFromJwt or from req.user
-    // Example with using req.user
-    const jwtData = req.user;
-    // Example with using helper.getDataFromJwt
-    // const jwtData = helper.getDataFromJwt(req);
+authRouterApi.get(
+  "/info",
+  authMiddleware.verifyToken,
+  async (req, res, next) => {
+    try {
+      // Get Jwt Data
+      const jwtData = req.user;
 
-    // Get user info with id_user from jwt data
-    const result_user_info = await authServices.getByIdUser(jwtData.id_user);
+      // Get user info with id_user from jwt data
+      const result_user_info = await authServices.getByIdUser(jwtData.id_user);
 
-    responses.Success(res, result_user_info[0]);
-  } catch (error) {
-    return responses.InternalServerError(res, error);
+      responses.Success(res, result_user_info[0]);
+    } catch (error) {
+      responses.InternalServerErrorCatch(res, error);
+      next(error);
+    }
   }
-});
+);
 
-router.post(
+authRouterApi.post(
   "/login",
   upload.array(),
   body("email")
@@ -54,11 +58,12 @@ router.post(
         });
       }
 
-      const [encrypted_password, salt] =
-        result_check_email[0].password.split(":");
+      const [encrypted_password, salt] = result_check_email[0].password.split(
+        ":"
+      );
 
-      if (encrypted_password === helper.encryptWithSalt(password, salt)) {
-        const token = helper.generateToken({
+      if (encrypted_password === cryptoUtils.encryptWithSalt(password, salt)) {
+        const token = jwtUtils.generateToken({
           id_user: result_login[0].id_user,
         });
         responses.Success(res, {
@@ -71,12 +76,13 @@ router.post(
         });
       }
     } catch (error) {
-      return responses.InternalServerError(res, error);
+      responses.InternalServerErrorCatch(res, error);
+      next(error);
     }
   }
 );
 
-router.post(
+authRouterApi.post(
   "/register",
   upload.array(),
   body("email")
@@ -100,11 +106,14 @@ router.post(
           message: "email already used",
         });
       }
-      const salt = helper.generateSalt();
+      const salt = cryptoUtils.generateSalt();
       const result_register = await authServices.register({
-        id_user: helper.generateUUIDV4(),
+        id_user: idGeneratorUtils.generateUUIDV4(),
         email,
-        hashed_password: `${helper.encryptWithSalt(password, salt)}:${salt}`,
+        hashed_password: `${cryptoUtils.encryptWithSalt(
+          password,
+          salt
+        )}:${salt}`,
         name,
       });
       if (!result_register.affectedRows) {
@@ -112,7 +121,7 @@ router.post(
           message: "database error",
         });
       }
-      const token = helper.generateToken({
+      const token = jwtUtils.generateToken({
         id_user: result_register.insertId,
       });
       responses.Success(res, {
@@ -120,12 +129,13 @@ router.post(
         token,
       });
     } catch (error) {
-      return responses.InternalServerError(res, error);
+      responses.InternalServerErrorCatch(res, error);
+      next(error);
     }
   }
 );
 
-router.post(
+authRouterApi.post(
   "/request_email_verification",
   upload.array(),
   body("email")
@@ -141,9 +151,10 @@ router.post(
     try {
       res.json(await auth.requestVerification(req));
     } catch (error) {
-      return responses.InternalServerError(res, error);
+      responses.InternalServerErrorCatch(res, error);
+      next(error);
     }
   }
 );
 
-module.exports = router;
+module.exports = authRouterApi;

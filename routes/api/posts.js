@@ -1,15 +1,14 @@
 const express = require("express");
-const router = express.Router();
 const { body, validationResult, query } = require("express-validator");
 const upload = require("../../middlewares/multer");
-const helper = require("../../helper");
 const postsServices = require("../../services/api/posts.services");
-const responses = require("../../responses");
+const responses = require("../../utilities/responses");
 
+const postsRouterApi = express.Router();
 // This is an example best practices by using services as database interactions
 // The database uses typeorm as it's engine
 
-router.get("/", async (req, res, next) => {
+postsRouterApi.get("/", async (req, res, next) => {
   const { id_post } = req.query;
   try {
     if (id_post) {
@@ -30,7 +29,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post(
+postsRouterApi.post(
   "/create",
   upload.array(),
   body("title_post").notEmpty().withMessage("title_post required"),
@@ -53,7 +52,7 @@ router.post(
   }
 );
 
-router.put(
+postsRouterApi.put(
   "/edit",
   upload.array(),
   query("id_post").notEmpty().withMessage("id_post query required"),
@@ -86,7 +85,7 @@ router.put(
   }
 );
 
-router.delete(
+postsRouterApi.delete(
   "/remove",
   query("id_post").notEmpty().withMessage("id_post query required"),
   async (req, res, next) => {
@@ -112,4 +111,4 @@ router.delete(
   }
 );
 
-module.exports = router;
+module.exports = postsRouterApi;

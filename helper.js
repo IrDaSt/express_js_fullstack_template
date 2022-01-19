@@ -2,7 +2,7 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 const uuid = require("uuid");
 const fse = require("fs-extra");
-const config = require("./config");
+const config = require("./constants/config");
 
 function emptyOrRows(rows) {
   if (!rows) {

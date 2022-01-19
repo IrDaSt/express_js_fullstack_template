@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 require("dotenv").config();
-var app = require("../app");
+var app = require("./app");
 var debug = require("debug")("express-js-fullstack-template:server");
 var http = require("http");
 

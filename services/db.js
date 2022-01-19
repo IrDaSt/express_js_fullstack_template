@@ -1,5 +1,5 @@
 const mysql = require("mysql2/promise");
-const config = require("../config");
+const config = require("../constants/config");
 
 // Traditional Query Database
 const query = async (sql, params) => {

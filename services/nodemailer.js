@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const config = require("../config");
+const config = require("../constants/config");
 
 // Handle email sender with nodemailer
 const transporter = nodemailer.createTransport({

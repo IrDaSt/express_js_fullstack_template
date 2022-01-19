@@ -1,3 +1,4 @@
 {
-  "ext": "js mjs coffee litcoffee json scss"
+  "ext": "js mjs coffee litcoffee json scss",
+  "exec": "node ./index.js"
 }

@@ -1,16 +1,16 @@
 const express = require("express");
-const router = express.Router();
 const { body, validationResult } = require("express-validator");
-const middleware = require("../../middlewares/auth");
 const Phones = require("../../models/Phones");
 const upload = require("../../middlewares/multer");
+
+const phoneRouterApi = express.Router();
 
 /**
  * This is an example on how to implement mongoose
  */
 
 // GET all phones data
-router.get("/", async (req, res, next) => {
+phoneRouterApi.get("/", async (req, res, next) => {
   try {
     const phones = await Phones.find();
     res.json(phones);
@@ -21,7 +21,7 @@ router.get("/", async (req, res, next) => {
 });
 
 // GET phone data by id
-router.get("/:id", async (req, res, next) => {
+phoneRouterApi.get("/:id", async (req, res, next) => {
   try {
     const phone = await Phones.findById(req.params.id);
     res.json(phone);
@@ -32,7 +32,7 @@ router.get("/:id", async (req, res, next) => {
 });
 
 // POST create new phone
-router.post(
+phoneRouterApi.post(
   "/",
   upload.array(),
   body("phone_number").notEmpty().withMessage("phone_number field required"),
@@ -59,7 +59,7 @@ router.post(
 );
 
 // POST search phone owner by keyword
-router.post(
+phoneRouterApi.post(
   "/search-owner",
   upload.array(),
   body("keyword").notEmpty().withMessage("keyword field required"),
@@ -89,7 +89,7 @@ router.post(
 );
 
 // PUT update phone
-router.put(
+phoneRouterApi.put(
   "/:id",
   upload.array(),
   body("phone_number").notEmpty().withMessage("phone_number field required"),
@@ -119,7 +119,7 @@ router.put(
 );
 
 // DELETE phone by id
-router.delete("/:id", async (req, res, next) => {
+phoneRouterApi.delete("/:id", async (req, res, next) => {
   try {
     const phone = await Phones.findById(req.params.id);
     await phone.remove();
@@ -132,4 +132,4 @@ router.delete("/:id", async (req, res, next) => {
   }
 });
 
-module.exports = router;
+module.exports = phoneRouterApi;

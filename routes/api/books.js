@@ -1,17 +1,17 @@
 const express = require("express");
-const router = express.Router();
 const booksServices = require("../../services/api/books.services");
 const authMiddleware = require("../../middlewares/auth");
 const upload = require("../../middlewares/multer");
-const helper = require("../../helper");
-const responses = require("../../responses");
+const responses = require("../../utilities/responses");
+
+const booksRouterApi = express.Router();
 
 /**
  * This is an example on how to implement mysql query with promise
  */
 
 // GET all books data
-router.get("/", async (req, res, next) => {
+booksRouterApi.get("/", async (req, res, next) => {
   const { id_book } = req.query;
   try {
     if (id_book) {
@@ -29,7 +29,7 @@ router.get("/", async (req, res, next) => {
 });
 
 // GET book data by id
-router.get("/:id", async (req, res, next) => {
+booksRouterApi.get("/:id", async (req, res, next) => {
   try {
     res.json(await booksServices.getById(req.params.id));
   } catch (error) {
@@ -40,7 +40,7 @@ router.get("/:id", async (req, res, next) => {
 });
 
 // POST create new book
-router.post(
+booksRouterApi.post(
   "/",
   upload.array(),
   authMiddleware.verifyToken,
@@ -56,7 +56,7 @@ router.post(
 );
 
 // PUT update book
-router.put(
+booksRouterApi.put(
   "/:id",
   upload.array(),
   authMiddleware.verifyToken,
@@ -72,14 +72,18 @@ router.put(
 );
 
 // DELETE book by id
-router.delete("/:id", authMiddleware.verifyToken, async (req, res, next) => {
-  try {
-    res.json(await booksServices.remove(req.params.id));
-  } catch (error) {
-    return responses.InternalServerError(res, {
-      message: `Error deleting book data ` + error.message,
-    });
+booksRouterApi.delete(
+  "/:id",
+  authMiddleware.verifyToken,
+  async (req, res, next) => {
+    try {
+      res.json(await booksServices.remove(req.params.id));
+    } catch (error) {
+      return responses.InternalServerError(res, {
+        message: `Error deleting book data ` + error.message,
+      });
+    }
   }
-});
+);
 
-module.exports = router;
+module.exports = booksRouterApi;

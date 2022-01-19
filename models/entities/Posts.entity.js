@@ -1,6 +1,6 @@
 const { EntitySchema } = require("typeorm");
 
-const Posts = new EntitySchema({
+const PostsEntity = new EntitySchema({
   name: "Posts", // Will use table name `post` as default behaviour.
   // tableName: "posts", // Optional: Provide `tableName` property to override the default behaviour for table name.
   columns: {
@@ -26,4 +26,4 @@ const Posts = new EntitySchema({
   },
 });
 
-module.exports = Posts;
+module.exports = { PostsEntity };
