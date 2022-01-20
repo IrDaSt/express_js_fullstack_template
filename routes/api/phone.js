@@ -2,6 +2,7 @@ const express = require("express");
 const { body, validationResult } = require("express-validator");
 const Phones = require("../../models/Phones");
 const upload = require("../../middlewares/multer");
+const responses = require("../../utilities/responses");
 
 const phoneRouterApi = express.Router();
 
@@ -13,9 +14,11 @@ const phoneRouterApi = express.Router();
 phoneRouterApi.get("/", async (req, res, next) => {
   try {
     const phones = await Phones.find();
-    res.json(phones);
+    responses.Success(res, phones);
   } catch (error) {
-    console.error(`Error getting phones data `, error.message);
+    responses.InternalServerError(res, {
+      message: `Error getting phones data ` + error.message,
+    });
     next(error);
   }
 });
@@ -24,9 +27,11 @@ phoneRouterApi.get("/", async (req, res, next) => {
 phoneRouterApi.get("/:id", async (req, res, next) => {
   try {
     const phone = await Phones.findById(req.params.id);
-    res.json(phone);
+    responses.Success(res, phone);
   } catch (error) {
-    console.error(`Error getting phone data `, error.message);
+    responses.InternalServerError(res, {
+      message: `Error getting phone data ` + error.message,
+    });
     next(error);
   }
 });
@@ -34,14 +39,14 @@ phoneRouterApi.get("/:id", async (req, res, next) => {
 // POST create new phone
 phoneRouterApi.post(
   "/",
-  upload.array(),
+  upload.fields([]),
   body("phone_number").notEmpty().withMessage("phone_number field required"),
   body("phone_area").notEmpty().withMessage("phone_area field required"),
   body("phone_owner").notEmpty().withMessage("phone_owner field required"),
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return responses.BadRequest(res, errors.array());
     }
     try {
       const { phone_number, phone_area, phone_owner } = req.body;
@@ -50,9 +55,11 @@ phoneRouterApi.post(
         phone_area,
         phone_owner,
       });
-      res.json(resultCreate);
+      responses.Created(res, resultCreate);
     } catch (error) {
-      console.error(`Error creating phone data `, error.message);
+      responses.InternalServerError(res, {
+        message: `Error creating phone data ` + error.message,
+      });
       next(error);
     }
   }
@@ -61,12 +68,12 @@ phoneRouterApi.post(
 // POST search phone owner by keyword
 phoneRouterApi.post(
   "/search-owner",
-  upload.array(),
+  upload.fields([]),
   body("keyword").notEmpty().withMessage("keyword field required"),
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return responses.BadRequest(res, errors.array());
     }
     try {
       const { keyword } = req.body;
@@ -80,9 +87,11 @@ phoneRouterApi.post(
           },
         ],
       });
-      res.json(resultSearch);
+      responses.Success(res, resultSearch);
     } catch (error) {
-      console.error(`Error searching phone owner data `, error.message);
+      responses.InternalServerError(res, {
+        message: `Error searching phone owner data ` + error.message,
+      });
       next(error);
     }
   }
@@ -91,14 +100,14 @@ phoneRouterApi.post(
 // PUT update phone
 phoneRouterApi.put(
   "/:id",
-  upload.array(),
+  upload.fields([]),
   body("phone_number").notEmpty().withMessage("phone_number field required"),
   body("phone_area").notEmpty().withMessage("phone_area field required"),
   body("phone_owner").notEmpty().withMessage("phone_owner field required"),
   async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return responses.BadRequest(res, errors.array());
     }
     try {
       const { phone_number, phone_area, phone_owner } = req.body;
@@ -107,12 +116,11 @@ phoneRouterApi.put(
       phone.phone_area = phone_area;
       phone.phone_owner = phone_owner;
       const resultSave = await phone.save();
-      res.json({
-        message: "Update berhasil",
-        result: resultSave,
-      });
+      responses.Success(res, resultSave);
     } catch (error) {
-      console.error(`Error updating phone data `, error.message);
+      responses.InternalServerError(res, {
+        message: `Error updating phone data ` + error.message,
+      });
       next(error);
     }
   }
@@ -123,11 +131,13 @@ phoneRouterApi.delete("/:id", async (req, res, next) => {
   try {
     const phone = await Phones.findById(req.params.id);
     await phone.remove();
-    res.json({
+    responses.Success(res, {
       message: "Delete berhasil",
     });
   } catch (error) {
-    console.error(`Error deleting phone data `, error.message);
+    responses.InternalServerError(res, {
+      message: `Error deleting phone data ` + error.message,
+    });
     next(error);
   }
 });

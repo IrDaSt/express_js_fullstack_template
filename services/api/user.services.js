@@ -1,17 +1,18 @@
-const db = require("../db");
-const helper = require("../../helper");
 const config = require("../../constants/config");
-const nodemailer = require("../nodemailer");
-const jwt = require("jsonwebtoken");
+const nodemailerUtils = require("../../utilities/nodemailer");
 const ejs = require("ejs");
+const otpGeneratorUtils = require("../../utilities/otp-generator");
+const mysqlconn = require("../../utilities/mysql");
 
 const getByIdUser = async (id_user) => {
-  const rows = await db.query(`select * from user where id_user=?`, [id_user]);
+  const rows = await mysqlconn.query(`select * from user where id_user=?`, [
+    id_user,
+  ]);
   return rows;
 };
 
 const login = async ({ email, hashed_password }) => {
-  const rows = await db.query(
+  const rows = await mysqlconn.query(
     "select * from user where email=? and password=?",
     [email, hashed_password]
   );
@@ -19,7 +20,7 @@ const login = async ({ email, hashed_password }) => {
 };
 
 const register = async ({ id_user, email, hashed_password, name }) => {
-  const resultInsert = await db.query(
+  const resultInsert = await mysqlconn.query(
     `insert into akun(id_user, email, password, name) values (?,?,?,?)`,
     [id_user, email, hashed_password, name]
   );
@@ -27,21 +28,14 @@ const register = async ({ id_user, email, hashed_password, name }) => {
 };
 
 const checkEmail = async (email) => {
-  const checkEmail = await db.query(`select * from akun where email=?`, [
+  const checkEmail = await mysqlconn.query(`select * from akun where email=?`, [
     email,
   ]);
   return checkEmail;
 };
 
-const userData = (req) => {
-  var data = helper.getDataFromJwt(req);
-  return {
-    data,
-  };
-};
-
 const requestVerification = async (req) => {
-  const checkEmail = await db.query(`select * from akun where email=?`, [
+  const checkEmail = await mysqlconn.query(`select * from akun where email=?`, [
     req.body.email,
   ]);
   if (!checkEmail.length) {
@@ -51,9 +45,9 @@ const requestVerification = async (req) => {
     };
   }
   // Send email and Create otp
-  const kode_verif = helper.generateOTP();
+  const kode_verif = otpGeneratorUtils.generateOTP();
   const data = await ejs.renderFile(
-    process.cwd() + "/views/emails/email_verifikasi.email.ejs",
+    "./views/emails/email_verifikasi.email.ejs",
     {
       nama: checkEmail[0].nama,
       kode_verif: kode_verif,
@@ -68,7 +62,9 @@ const requestVerification = async (req) => {
   };
 
   try {
-    const resultSentEmail = await nodemailer.transporter.sendMail(mainOptions);
+    const resultSentEmail = await nodemailerUtils.transporter.sendMail(
+      mainOptions
+    );
     console.log("Message sent: " + resultSentEmail.response);
     return {
       data: {
@@ -86,13 +82,12 @@ const requestVerification = async (req) => {
   }
 };
 
-const authServices = {
+const userServicesApi = {
   getByIdUser,
   login,
   register,
   checkEmail,
-  userData,
   requestVerification,
 };
 
-module.exports = authServices;
+module.exports = userServicesApi;

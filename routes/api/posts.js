@@ -14,18 +14,18 @@ postsRouterApi.get("/", async (req, res, next) => {
     if (id_post) {
       const post = await postsServices.getOnePostById(id_post);
       if (post) {
-        return responses.Success(res, post);
-      } else {
         return responses.NotFound(res, {
           message: "post not found",
         });
       }
+      responses.Success(res, post);
     } else {
       const posts = await postsServices.getAllPosts();
-      return responses.Success(res, posts);
+      responses.Success(res, posts);
     }
   } catch (error) {
-    return responses.InternalServerError(res, error);
+    responses.InternalServerErrorCatch(res, error);
+    next(error);
   }
 });
 
@@ -43,11 +43,12 @@ postsRouterApi.post(
     try {
       const result_insert_post = await postsServices.create({
         title_post,
-        description_post: description_post ?? null,
+        description_post,
       });
       return responses.Success(res, result_insert_post);
     } catch (error) {
-      return responses.InternalServerError(res, error);
+      responses.InternalServerErrorCatch(res, error);
+      next(error);
     }
   }
 );
@@ -76,11 +77,12 @@ postsRouterApi.put(
         return responses.Success(res, result_update_post);
       } else {
         return responses.InternalServerError(res, {
-          message: "plase update whatever",
+          message: "please update whatever",
         });
       }
     } catch (error) {
-      return responses.InternalServerError(res, error);
+      responses.InternalServerErrorCatch(res, error);
+      next(error);
     }
   }
 );
@@ -97,16 +99,16 @@ postsRouterApi.delete(
     const { id_post } = req.query;
     try {
       const target = await postsServices.getOnePostById(id_post);
-      if (target) {
-        const result_delete = await postsServices.deleteOneById(id_post);
-        return responses.Success(res, result_delete);
-      } else {
+      if (!target) {
         return responses.NotFound(res, {
           message: "post not found",
         });
       }
+      const result_delete = await postsServices.deleteOneById(id_post);
+      return responses.Success(res, result_delete);
     } catch (error) {
-      return responses.InternalServerError(res, error);
+      responses.InternalServerErrorCatch(res, error);
+      next(error);
     }
   }
 );

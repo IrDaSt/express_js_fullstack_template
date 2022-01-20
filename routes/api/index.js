@@ -2,14 +2,12 @@ const express = require("express");
 const router = express.Router();
 
 const booksRouterApi = require("./books");
-const akunRouter = require("./akun");
 const phoneRouterApi = require("./phone");
 const postsRouterApi = require("./posts");
 const authRouterApi = require("./auth");
 
 router.use("/books", booksRouterApi);
 router.use("/auth", authRouterApi);
-router.use("/akun", akunRouter);
 router.use("/phone", phoneRouterApi);
 router.use("/posts", postsRouterApi);
 

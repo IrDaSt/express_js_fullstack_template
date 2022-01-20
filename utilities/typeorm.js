@@ -1,6 +1,7 @@
 const typeorm = require("typeorm");
 const config = require("../constants/config");
 const { PostsEntity } = require("../models/entities/Posts.entity");
+const { UserEntity } = require("../models/entities/User.entity");
 
 const connection1 = typeorm.createConnection({
   type: "mariadb",
@@ -11,7 +12,7 @@ const connection1 = typeorm.createConnection({
   password: config.database.one.password,
   database: config.database.one.database,
   synchronize: false,
-  entities: [PostsEntity],
+  entities: [PostsEntity, UserEntity],
 });
 
 class TypeOrmConnection {

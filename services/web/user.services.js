@@ -1,9 +1,7 @@
-const db = require("../db");
-const helper = require("../../helper");
-const config = require("../../constants/config");
+const mysqlconn = require("../../utilities/mysql");
 
 const getAllUsers = async () => {
-  const rowsUsers = await db.query("select * from users");
+  const rowsUsers = await mysqlconn.query("select * from users");
   return rowsUsers;
 };
 

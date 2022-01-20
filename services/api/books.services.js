@@ -1,22 +1,22 @@
-const db = require("../db");
-const helper = require("../../helper");
-const config = require("../../constants/config");
+const mysqlconn = require("../../utilities/mysql");
 
 // all books
 const getAll = async () => {
-  const rows = await db.query(`select * from books`);
+  const rows = await mysqlconn.query(`select * from books`);
   return rows;
 };
 
 // book by id
 const getById = async (id_book) => {
-  const rows = await db.query("Select * from books where id_book=?", [id_book]);
+  const rows = await mysqlconn.query("Select * from books where id_book=?", [
+    id_book,
+  ]);
   return rows;
 };
 
 // create book
 const create = async (request) => {
-  const result = await db.query(
+  const result = await mysqlconn.query(
     "insert into books(name, author, year, description) values (?,?,?,?)",
     [request.name, request.author, request.year, request.description]
   );
@@ -30,7 +30,7 @@ const create = async (request) => {
 
 // update book
 const update = async (id, request) => {
-  const result = await db.query(
+  const result = await mysqlconn.query(
     "update books set name=?, author=?, year=?, description=? where id=?",
     [request.name, request.author, request.year, request.description, id]
   );
@@ -43,7 +43,7 @@ const update = async (id, request) => {
 
 // remove book
 const remove = async (id) => {
-  const result = await db.query("delete from books where id=?", [id]);
+  const result = await mysqlconn.query("delete from books where id=?", [id]);
   var message = "Error deleting book";
   if (result.affectedRows) {
     message = "Successfully deleted book";

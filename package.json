@@ -1,13 +1,14 @@
 {
   "name": "express-js-fullstack-template",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "private": true,
+  "main": "index.js",
   "scripts": {
     "start": "node ./index.js",
-    "dev": "SET DEBUG=express-js-fullstack-template:* & nodemon",
     "build": "npm run build:css",
     "build:css": "node-sass --recursive --output-style compressed -o ./public/dist/css ./public/scss/",
-    "build:css:watch": "npm run build:css && node-sass --recursive --output-style compressed -wo ./public/dist/css ./public/scss/"
+    "dev": "SET DEBUG=express-js-fullstack-template:* & nodemon",
+    "dev:css:watch": "npm run build:css && node-sass --recursive --output-style compressed -wo ./public/dist/css ./public/scss/"
   },
   "dependencies": {
     "cookie-parser": "^1.4.6",
@@ -15,7 +16,7 @@
     "debug": "^4.3.3",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
-    "express": "^4.17.1",
+    "express": "^4.17.2",
     "express-flash": "^0.0.2",
     "express-session": "^1.17.2",
     "express-validator": "^6.13.0",
@@ -26,7 +27,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.0.14",
     "morgan": "^1.10.0",
-    "multer": "^1.4.3",
+    "multer": "^1.4.4",
     "mysql2": "^2.3.3",
     "nodemailer": "^6.7.2",
     "rotating-file-stream": "^3.0.2",

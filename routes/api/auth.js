@@ -1,6 +1,6 @@
 const express = require("express");
 const { body, validationResult } = require("express-validator");
-const authServices = require("../../services/api/auth.services");
+const userServicesApi = require("../../services/api/user.services");
 const upload = require("../../middlewares/multer");
 const authMiddleware = require("../../middlewares/auth");
 const cryptoUtils = require("../../utilities/crypto");
@@ -24,7 +24,9 @@ authRouterApi.get(
       const jwtData = req.user;
 
       // Get user info with id_user from jwt data
-      const result_user_info = await authServices.getByIdUser(jwtData.id_user);
+      const result_user_info = await userServicesApi.getByIdUser(
+        jwtData.id_user
+      );
 
       responses.Success(res, result_user_info[0]);
     } catch (error) {
@@ -51,16 +53,15 @@ authRouterApi.post(
 
     const { email, password } = req.body;
     try {
-      const result_check_email = await authServices.checkEmail(email);
+      const result_check_email = await userServicesApi.checkEmail(email);
       if (result_check_email.length === 0) {
         return responses.InternalServerError(res, {
           message: "login failed",
         });
       }
 
-      const [encrypted_password, salt] = result_check_email[0].password.split(
-        ":"
-      );
+      const [encrypted_password, salt] =
+        result_check_email[0].password.split(":");
 
       if (encrypted_password === cryptoUtils.encryptWithSalt(password, salt)) {
         const token = jwtUtils.generateToken({
@@ -100,14 +101,14 @@ authRouterApi.post(
 
     const { email, password, name } = req.body;
     try {
-      const result_check_email = await authServices.checkEmail(email);
+      const result_check_email = await userServicesApi.checkEmail(email);
       if (result_check_email.length > 0) {
         return responses.InternalServerError(res, {
           message: "email already used",
         });
       }
       const salt = cryptoUtils.generateSalt();
-      const result_register = await authServices.register({
+      const result_register = await userServicesApi.register({
         id_user: idGeneratorUtils.generateUUIDV4(),
         email,
         hashed_password: `${cryptoUtils.encryptWithSalt(
