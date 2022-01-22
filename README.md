@@ -1,19 +1,53 @@
-# Express js Full Stack Template
+# Express Javascript Fullstack Boilerplate
 
-Express js full stack template for faster and easier express website development
-and full of examples
+This template is made for you who don't wanna configure lengthy boilerplate for your express project.
+It has several features:
 
-```cmd
-# First install node depedencies
-npm install
+1. Full Javascript Coded Server
+2. Live Reload with [nodemon](https://www.npmjs.com/package/nodemon)
+3. File Upload examples with [multer](https://www.npmjs.com/package/multer)
+4. Automatic Swagger UI API Docs with Open API 3.0 with [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express)
+5. Mysql2 with promise examples with [mysql2](https://www.npmjs.com/package/mysql2)
+6. Database ORM with [TypeORM](https://typeorm.io/#/) examples for MariaDB MySQL database
+7. View engine powered with [EJS (Embedded JavaScript templating)](https://ejs.co)
+8. And much more..
 
-# Then run the server on developer mode
-npm run dev
+# Start Using
 
-# If using scss, then use this for live scss recompile on second terminal
-npm run build:css:watch
-```
+Make sure to have the latest Node.js version. You can start use this template by clicking "use this template" button, or fork this repository into your own, or download zipped repository.
 
-### Running on EJS view
+After that, open a new terminal inside your project directory.
 
-This template is using ejs as it's view engine.
+If you haven't already, install **node-sass**, and **nodemon** globally by typing this line at your terminal.
+
+    npm i -g node-sass nodemon
+
+After finishing installing necessary global modules, you can start install all necessary module automatically by typing this line at your terminal.
+
+    npm i
+
+Create a new **.env** files in your root directory and you can see the examples in **.env.example**. Make sure you have the **database** configured in your localhost. After that you can run you application by typing this line at your terminal.
+
+    npm run dev
+
+# SCSS Watch
+
+For using scss as your main styling, for the best practices the system will only compile the **main.scss** file inside **public/scss/main.scss**. If you need more scss files, you can include it in the **main.scss** file. To make the scss files compiled automatically, you need to run a separate terminal in the same project directory, after that type this line at your terminal.
+
+    npm run dev:scss:watch
+
+After that, the scss files will be compiled every detected change to **public/dist/scss-css/** folder.
+
+# Production Build
+
+To build a production ready project, at first, you just need to run this line at your terminal.
+
+    npm run build
+
+This will built an optimized project without changing the purpose of the code. After that, set the **NODE_ENV** inside the **.env** file to **production**, and then run this line at your terminal.
+
+    npm run start
+
+And your application already deployed!
+
+© Copyright by IrDaSt 2022.
