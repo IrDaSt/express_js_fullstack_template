@@ -17,6 +17,7 @@ const verifyToken = (req, res, next) => {
         if (err)
           responses.InternalServerError(res, {
             message: "Failed to authenticate token",
+            err,
           });
         req.user = value;
         next();

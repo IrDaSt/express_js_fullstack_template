@@ -67,7 +67,7 @@ const deleteOneById = async (id_post) => {
   return result_delete;
 };
 
-const postsServices = {
+const postsServicesApi = {
   getAllPosts,
   getOnePostById,
   create,
@@ -75,4 +75,4 @@ const postsServices = {
   deleteOneById,
 };
 
-module.exports = postsServices;
+module.exports = postsServicesApi;

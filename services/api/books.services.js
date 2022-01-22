@@ -1,3 +1,4 @@
+const idGeneratorUtils = require("../../utilities/id-generator");
 const mysqlconn = require("../../utilities/mysql");
 
 // all books
@@ -15,43 +16,32 @@ const getById = async (id_book) => {
 };
 
 // create book
-const create = async (request) => {
+const create = async ({ name, author, year, description }) => {
   const result = await mysqlconn.query(
-    "insert into books(name, author, year, description) values (?,?,?,?)",
-    [request.name, request.author, request.year, request.description]
+    "insert into books(id_book, name, author, year, description) values (?,?,?,?,?)",
+    [idGeneratorUtils.generateUUIDV4(), name, author, year, description]
   );
-
-  var message = "Error creating new book";
-  if (result.affectedRows) {
-    message = "Successfully created new book";
-  }
-  return { message };
+  return result;
 };
 
 // update book
-const update = async (id, request) => {
+const update = async ({ id_book, name, author, year, description }) => {
   const result = await mysqlconn.query(
-    "update books set name=?, author=?, year=?, description=? where id=?",
-    [request.name, request.author, request.year, request.description, id]
+    "update books set name=?, author=?, year=?, description=? where id_book=?",
+    [name, author, year, description, id_book]
   );
-  var message = "Error updating book";
-  if (result.affectedRows) {
-    message = "Successfully updated book";
-  }
-  return { message };
+  return result;
 };
 
 // remove book
-const remove = async (id) => {
-  const result = await mysqlconn.query("delete from books where id=?", [id]);
-  var message = "Error deleting book";
-  if (result.affectedRows) {
-    message = "Successfully deleted book";
-  }
-  return { message };
+const remove = async (id_book) => {
+  const result = await mysqlconn.query("delete from books where id_book=?", [
+    id_book,
+  ]);
+  return result;
 };
 
-const booksServices = {
+const booksServicesApi = {
   getAll,
   getById,
   create,
@@ -59,4 +49,4 @@ const booksServices = {
   remove,
 };
 
-module.exports = booksServices;
+module.exports = booksServicesApi;

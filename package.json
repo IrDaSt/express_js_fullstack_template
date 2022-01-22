@@ -1,14 +1,14 @@
 {
   "name": "express-js-fullstack-template",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "private": true,
   "main": "index.js",
   "scripts": {
     "start": "node ./index.js",
-    "build": "npm run build:css",
-    "build:css": "node-sass --recursive --output-style compressed -o ./public/dist/css ./public/scss/",
+    "build": "npm run build:scss",
+    "build:scss": "node-sass --recursive --output-style compressed -o ./public/dist/scss-css ./public/scss/",
     "dev": "SET DEBUG=express-js-fullstack-template:* & nodemon",
-    "dev:css:watch": "npm run build:css && node-sass --recursive --output-style compressed -wo ./public/dist/css ./public/scss/"
+    "dev:scss:watch": "npm run build:scss && node-sass --recursive --output-style compressed -wo ./public/dist/scss-css ./public/scss/"
   },
   "dependencies": {
     "cookie-parser": "^1.4.6",
@@ -31,7 +31,6 @@
     "mysql2": "^2.3.3",
     "nodemailer": "^6.7.2",
     "rotating-file-stream": "^3.0.2",
-    "swagger-jsdoc": "^6.1.0",
     "swagger-ui-express": "^4.3.0",
     "typeorm": "^0.2.41",
     "uuid": "^8.3.2"

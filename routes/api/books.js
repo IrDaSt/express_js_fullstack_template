@@ -1,5 +1,5 @@
 const express = require("express");
-const booksServices = require("../../services/api/books.services");
+const booksServicesApi = require("../../services/api/books.services");
 const authMiddleware = require("../../middlewares/auth");
 const upload = require("../../middlewares/multer");
 const responses = require("../../utilities/responses");
@@ -12,29 +12,32 @@ const booksRouterApi = express.Router();
 
 // GET all books data
 booksRouterApi.get("/", async (req, res, next) => {
-  const { id_book } = req.query;
   try {
-    if (id_book) {
-      // GET book data by id_book
-      const book = await booksServices.getById(id_book);
-      responses.Success(res, book[0]);
-    } else {
-      // GET all books data
-      const books = await booksServices.getAll();
-      responses.Success(res, books);
-    }
+    // GET all books data
+    const books = await booksServicesApi.getAll();
+    responses.Success(res, books);
   } catch (error) {
-    return responses.InternalServerError(res, error);
+    return responses.InternalServerError(res, {
+      message: `Error getting book data `,
+      error,
+    });
   }
 });
 
 // GET book data by id
 booksRouterApi.get("/:id", async (req, res, next) => {
   try {
-    res.json(await booksServices.getById(req.params.id));
+    const book = await booksServicesApi.getById(req.params.id);
+    if (!book.length) {
+      return responses.InternalServerError(res, {
+        message: "Not Found",
+      });
+    }
+    responses.Success(res, book);
   } catch (error) {
     return responses.InternalServerError(res, {
-      message: `Error getting book data ` + error.message,
+      message: `Error getting book data `,
+      error,
     });
   }
 });
@@ -45,11 +48,26 @@ booksRouterApi.post(
   upload.array(),
   authMiddleware.verifyToken,
   async (req, res, next) => {
+    const { name, author, year, description } = req.body;
     try {
-      res.json(await booksServices.create(req.body));
+      const result_insert = await booksServicesApi.create({
+        name: name,
+        author: author,
+        year: year,
+        description: description,
+      });
+      if (!result_insert.affectedRows) {
+        return responses.InternalServerError(res, {
+          message: "Insert failed",
+        });
+      }
+      responses.Created(res, {
+        message: "Insert success",
+      });
     } catch (error) {
       return responses.InternalServerError(res, {
-        message: `Error creating book data ` + error.message,
+        message: `Error creating book data`,
+        error,
       });
     }
   }
@@ -61,11 +79,28 @@ booksRouterApi.put(
   upload.array(),
   authMiddleware.verifyToken,
   async (req, res, next) => {
+    const id_book = req.params.id;
+    const { name, author, year, description } = req.body;
     try {
-      res.json(await booksServices.update(req.params.id, req.body));
+      const result_edit = await booksServicesApi.update({
+        id_book,
+        name,
+        author,
+        year,
+        description,
+      });
+      if (!result_edit.affectedRows) {
+        return responses.InternalServerError(res, {
+          message: "Update failed",
+        });
+      }
+      responses.Success(res, {
+        message: "Update success",
+      });
     } catch (error) {
       return responses.InternalServerError(res, {
-        message: `Error updating book data ` + error.message,
+        message: `Error updating book data `,
+        error,
       });
     }
   }
@@ -76,11 +111,21 @@ booksRouterApi.delete(
   "/:id",
   authMiddleware.verifyToken,
   async (req, res, next) => {
+    const id_book = req.params.id;
     try {
-      res.json(await booksServices.remove(req.params.id));
+      const result_delete = await booksServicesApi.remove(id_book);
+      if (!result_delete.affectedRows) {
+        return responses.InternalServerError(res, {
+          message: "Delete failed",
+        });
+      }
+      responses.Success(res, {
+        message: "Delete success",
+      });
     } catch (error) {
       return responses.InternalServerError(res, {
-        message: `Error deleting book data ` + error.message,
+        message: `Error deleting book data `,
+        error,
       });
     }
   }

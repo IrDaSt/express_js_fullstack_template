@@ -16,10 +16,9 @@ phoneRouterApi.get("/", async (req, res, next) => {
     const phones = await Phones.find();
     responses.Success(res, phones);
   } catch (error) {
-    responses.InternalServerError(res, {
+    return responses.InternalServerError(res, {
       message: `Error getting phones data ` + error.message,
     });
-    next(error);
   }
 });
 
@@ -29,10 +28,9 @@ phoneRouterApi.get("/:id", async (req, res, next) => {
     const phone = await Phones.findById(req.params.id);
     responses.Success(res, phone);
   } catch (error) {
-    responses.InternalServerError(res, {
+    return responses.InternalServerError(res, {
       message: `Error getting phone data ` + error.message,
     });
-    next(error);
   }
 });
 
@@ -57,10 +55,9 @@ phoneRouterApi.post(
       });
       responses.Created(res, resultCreate);
     } catch (error) {
-      responses.InternalServerError(res, {
+      return responses.InternalServerError(res, {
         message: `Error creating phone data ` + error.message,
       });
-      next(error);
     }
   }
 );
@@ -89,10 +86,9 @@ phoneRouterApi.post(
       });
       responses.Success(res, resultSearch);
     } catch (error) {
-      responses.InternalServerError(res, {
+      return responses.InternalServerError(res, {
         message: `Error searching phone owner data ` + error.message,
       });
-      next(error);
     }
   }
 );
@@ -118,10 +114,9 @@ phoneRouterApi.put(
       const resultSave = await phone.save();
       responses.Success(res, resultSave);
     } catch (error) {
-      responses.InternalServerError(res, {
+      return responses.InternalServerError(res, {
         message: `Error updating phone data ` + error.message,
       });
-      next(error);
     }
   }
 );
@@ -135,10 +130,9 @@ phoneRouterApi.delete("/:id", async (req, res, next) => {
       message: "Delete berhasil",
     });
   } catch (error) {
-    responses.InternalServerError(res, {
+    return responses.InternalServerError(res, {
       message: `Error deleting phone data ` + error.message,
     });
-    next(error);
   }
 });
 

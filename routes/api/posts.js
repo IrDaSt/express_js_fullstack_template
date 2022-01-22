@@ -1,7 +1,7 @@
 const express = require("express");
 const { body, validationResult, query } = require("express-validator");
 const upload = require("../../middlewares/multer");
-const postsServices = require("../../services/api/posts.services");
+const postsServicesApi = require("../../services/api/posts.services");
 const responses = require("../../utilities/responses");
 
 const postsRouterApi = express.Router();
@@ -12,7 +12,7 @@ postsRouterApi.get("/", async (req, res, next) => {
   const { id_post } = req.query;
   try {
     if (id_post) {
-      const post = await postsServices.getOnePostById(id_post);
+      const post = await postsServicesApi.getOnePostById(id_post);
       if (post) {
         return responses.NotFound(res, {
           message: "post not found",
@@ -20,7 +20,7 @@ postsRouterApi.get("/", async (req, res, next) => {
       }
       responses.Success(res, post);
     } else {
-      const posts = await postsServices.getAllPosts();
+      const posts = await postsServicesApi.getAllPosts();
       responses.Success(res, posts);
     }
   } catch (error) {
@@ -41,7 +41,7 @@ postsRouterApi.post(
 
     const { title_post, description_post } = req.body;
     try {
-      const result_insert_post = await postsServices.create({
+      const result_insert_post = await postsServicesApi.create({
         title_post,
         description_post,
       });
@@ -73,7 +73,9 @@ postsRouterApi.put(
         if (title_post) insert_post_obj.title_post = title_post;
         if (description_post)
           insert_post_obj.description_post = description_post;
-        const result_update_post = await postsServices.update(insert_post_obj);
+        const result_update_post = await postsServicesApi.update(
+          insert_post_obj
+        );
         return responses.Success(res, result_update_post);
       } else {
         return responses.InternalServerError(res, {
@@ -98,13 +100,13 @@ postsRouterApi.delete(
 
     const { id_post } = req.query;
     try {
-      const target = await postsServices.getOnePostById(id_post);
+      const target = await postsServicesApi.getOnePostById(id_post);
       if (!target) {
         return responses.NotFound(res, {
           message: "post not found",
         });
       }
-      const result_delete = await postsServices.deleteOneById(id_post);
+      const result_delete = await postsServicesApi.deleteOneById(id_post);
       return responses.Success(res, result_delete);
     } catch (error) {
       responses.InternalServerErrorCatch(res, error);
