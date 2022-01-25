@@ -1,4 +1,4 @@
-const idGeneratorUtils = require("../../utilities/id-generator");
+const idGeneratorUtils = require("../../utilities/id-generator.utils");
 const mysqlconn = require("../../utilities/mysql");
 
 // all books

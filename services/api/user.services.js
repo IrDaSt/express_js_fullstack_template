@@ -1,7 +1,7 @@
 const config = require("../../constants/config");
-const nodemailerUtils = require("../../utilities/nodemailer");
+const nodemailerUtils = require("../../utilities/nodemailer.utils");
 const ejs = require("ejs");
-const otpGeneratorUtils = require("../../utilities/otp-generator");
+const otpGeneratorUtils = require("../../utilities/otp-generator.utils");
 const mysqlconn = require("../../utilities/mysql");
 
 const getByIdUser = async (id_user) => {

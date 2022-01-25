@@ -3,10 +3,10 @@ const { body, validationResult } = require("express-validator");
 const userServicesApi = require("../../services/api/user.services");
 const upload = require("../../middlewares/multer");
 const authMiddleware = require("../../middlewares/auth");
-const cryptoUtils = require("../../utilities/crypto");
-const jwtUtils = require("../../utilities/jsonwebtoken");
+const cryptoUtils = require("../../utilities/crypto.utils");
+const jwtUtils = require("../../utilities/jsonwebtoken.utils");
 const responses = require("../../utilities/responses");
-const idGeneratorUtils = require("../../utilities/id-generator");
+const idGeneratorUtils = require("../../utilities/id-generator.utils");
 
 const authRouterApi = express.Router();
 
