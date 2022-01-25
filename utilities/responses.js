@@ -78,6 +78,7 @@ const InternalServerErrorCatch = (res, error) =>
       error: {
         message: error.message,
         stack: error.stack,
+        errors: error,
       },
     })
   );
