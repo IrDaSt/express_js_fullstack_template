@@ -67,7 +67,9 @@ app.use(morgan("combined", { stream: accessLogStream }));
 // Web Guard By Helmet
 app.use(
   helmet({
+    originAgentCluster: false,
     contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
   })
 );
 
