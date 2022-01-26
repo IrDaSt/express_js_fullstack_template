@@ -2,7 +2,7 @@ const express = require("express");
 const { body, validationResult } = require("express-validator");
 const Phones = require("../../models/Phones");
 const upload = require("../../middlewares/multer");
-const responses = require("../../utilities/responses");
+const responses = require("../../utilities/responses.utils");
 
 const phoneRouterApi = express.Router();
 

@@ -1,4 +1,4 @@
-const mysqlconn = require("../../utilities/mysql");
+const mysqlconn = require("../../utilities/mysql.utils");
 
 const getAllUsers = async () => {
   const rowsUsers = await mysqlconn.query("select * from users");

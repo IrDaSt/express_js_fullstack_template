@@ -12,6 +12,10 @@ It has several features:
 7. View engine powered with [EJS (Embedded JavaScript templating)](https://ejs.co)
 8. And much more..
 
+# Before Start Using
+
+Before you start using the boilerplate, you need to hava accessable MariaDB database. This is because **TypeORM** implementation needs immediate database connection unlike **mysql/promise**. After that, make a new environment variables file by creating .env file in you root project directory. The examples for .env file can be found at **.env.example**. Make sure you have properly configure the database connection.
+
 # Start Using
 
 Make sure to have the latest Node.js version. You can start use this template by clicking "use this template" button, or fork this repository into your own, or download zipped repository.
@@ -49,5 +53,13 @@ This will built an optimized project without changing the purpose of the code. A
     npm run start
 
 And your application already deployed!
+
+# Swagger UI Implementation
+
+After running the server, you can access the api documentation built with [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express) on route `/api-docs`.
+
+The configuration file can be found at your directory `/swagger/swagger-config.js`. This api documentation built with OpenAPI 3.0 format.
+
+---
 
 © Copyright by IrDaSt 2022.

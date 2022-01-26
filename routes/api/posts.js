@@ -2,7 +2,7 @@ const express = require("express");
 const { body, validationResult, query } = require("express-validator");
 const upload = require("../../middlewares/multer");
 const postsServicesApi = require("../../services/api/posts.services");
-const responses = require("../../utilities/responses");
+const responses = require("../../utilities/responses.utils");
 
 const postsRouterApi = express.Router();
 // This is an example best practices by using services as database interactions

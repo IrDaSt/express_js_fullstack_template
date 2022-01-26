@@ -1,5 +1,5 @@
 const { PostsEntity } = require("../../models/entities/Posts.entity");
-const typeormconn = require("../../utilities/typeorm");
+const typeormconn = require("../../utilities/typeorm.utils");
 
 const getAllPosts = async () => {
   const result = await typeormconn.connection1

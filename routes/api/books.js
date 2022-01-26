@@ -2,7 +2,7 @@ const express = require("express");
 const booksServicesApi = require("../../services/api/books.services");
 const authMiddleware = require("../../middlewares/auth");
 const upload = require("../../middlewares/multer");
-const responses = require("../../utilities/responses");
+const responses = require("../../utilities/responses.utils");
 
 const booksRouterApi = express.Router();
 

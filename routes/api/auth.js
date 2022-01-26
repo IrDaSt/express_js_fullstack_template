@@ -5,7 +5,7 @@ const upload = require("../../middlewares/multer");
 const authMiddleware = require("../../middlewares/auth");
 const cryptoUtils = require("../../utilities/crypto.utils");
 const jwtUtils = require("../../utilities/jsonwebtoken.utils");
-const responses = require("../../utilities/responses");
+const responses = require("../../utilities/responses.utils");
 const idGeneratorUtils = require("../../utilities/id-generator.utils");
 
 const authRouterApi = express.Router();
