@@ -1,5 +1,6 @@
 const express = require("express");
 const config = require("../../constants/config");
+const { loggerConsole } = require("../../utilities/winston.utils");
 const router = express.Router();
 
 const usersRouter = require("./users");
@@ -21,7 +22,7 @@ router.get("/", function (req, res, next) {
   // }); // a day in milliseconds
 
   // Access Cookie from another request
-  // console.log(`Cookies ${req.cookies.test2}`);
+  // loggerConsole.info(`Cookies ${req.cookies.test2}`);
 
   res.render("pages/index", { title: "Express" });
 });

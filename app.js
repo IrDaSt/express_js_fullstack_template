@@ -8,7 +8,6 @@ const session = require("express-session");
 const flash = require("express-flash");
 const helmet = require("helmet");
 const cors = require("cors");
-const rfs = require("rotating-file-stream");
 const mongoose = require("mongoose");
 const swaggerUi = require("swagger-ui-express");
 
@@ -17,7 +16,7 @@ const apiRouter = require("./routes/api");
 
 const config = require("./constants/config");
 const swaggerConfig = require("./swagger/swagger-config");
-const winstonConfig = require("./utilities/winston.utils");
+const { loggerHttp } = require("./utilities/winston.utils");
 
 const app = express();
 
@@ -34,7 +33,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 if (process.env.NODE_ENV === "development") {
-  console.log("Development mode");
+  console.log("Start Development mode");
   // Use Morgan Logging system
   // Dev console logs
   app.use(morgan("dev"));
@@ -44,7 +43,7 @@ if (process.env.NODE_ENV === "development") {
 app.use(
   morgan("combined", {
     stream: {
-      write: (message) => winstonConfig.logger.info(message.trim()),
+      write: (message) => loggerHttp.info(message.trim()),
     },
   })
 );

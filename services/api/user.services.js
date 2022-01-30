@@ -3,6 +3,7 @@ const nodemailerUtils = require("../../utilities/nodemailer.utils");
 const ejs = require("ejs");
 const otpGeneratorUtils = require("../../utilities/otp-generator.utils");
 const mysqlconn = require("../../utilities/mysql.utils");
+const { loggerConsole } = require("../../utilities/winston.utils");
 
 const getByIdUser = async (id_user) => {
   const rows = await mysqlconn.query(`select * from user where id_user=?`, [
@@ -65,7 +66,7 @@ const requestVerification = async (req) => {
     const resultSentEmail = await nodemailerUtils.transporter.sendMail(
       mainOptions
     );
-    console.log("Message sent: " + resultSentEmail.response);
+    loggerConsole.info("Message sent: " + resultSentEmail.response);
     return {
       data: {
         verification_code: kode_verif,

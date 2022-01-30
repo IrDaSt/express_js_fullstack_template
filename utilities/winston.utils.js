@@ -1,24 +1,45 @@
 const winston = require("winston");
 require("winston-daily-rotate-file");
 
-// Create a rotating write stream for Logging system
-const dailyRotateTransport = new winston.transports.DailyRotateFile({
+// Create a rotating write stream for Http Logging system
+const dailyRotateTransportHttp = new winston.transports.DailyRotateFile({
   filename: "application-%DATE%.log",
-  dirname: `./logs/`,
+  dirname: `./logs/http/`,
   datePattern: "YYYY-MM-DD-HH",
   zippedArchive: true,
   maxSize: "10m",
   maxFiles: "1d",
+  format: winston.format.json(),
 });
 
-dailyRotateTransport.on("rotate", function (oldFilename, newFilename) {
+// Create a rotating write stream for Console Logging system
+const dailyRotateTransportConsole = new winston.transports.DailyRotateFile({
+  filename: "application-%DATE%.log",
+  dirname: `./logs/console/`,
+  datePattern: "YYYY-MM-DD-HH",
+  zippedArchive: true,
+  maxSize: "10m",
+  maxFiles: "1d",
+  format: winston.format.json(),
+});
+
+dailyRotateTransportHttp.on("rotate", function (oldFilename, newFilename) {
   // do something fun
 });
 
-const logger = winston.createLogger({
-  format: winston.format.json(),
+const loggerHttp = winston.createLogger({
   exitOnError: false,
-  transports: [dailyRotateTransport, new winston.transports.Console()],
+  transports: [dailyRotateTransportHttp],
 });
 
-module.exports = { logger };
+const loggerConsole = winston.createLogger({
+  exitOnError: false,
+  transports: [
+    new winston.transports.Console({
+      format: winston.format.printf((info) => info.message),
+    }),
+    dailyRotateTransportConsole,
+  ],
+});
+
+module.exports = { loggerHttp, loggerConsole };

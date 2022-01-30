@@ -2,6 +2,7 @@ const typeorm = require("typeorm");
 const config = require("../constants/config");
 const { PostsEntity } = require("../models/entities/Posts.entity");
 const { UserEntity } = require("../models/entities/User.entity");
+const { loggerConsole } = require("./winston.utils");
 
 const connection1 = typeorm.createConnection({
   type: "mariadb",
@@ -22,8 +23,8 @@ class TypeOrmConnection {
         this.connection1 = conn;
       })
       .catch((err) => {
-        console.log("database connection error");
-        console.log(err);
+        loggerConsole.error("database connection error");
+        loggerConsole.error(err);
         return;
       });
   }

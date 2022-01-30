@@ -1,6 +1,6 @@
 {
   "name": "express-js-fullstack-template",
-  "version": "3.0.4",
+  "version": "3.1.0",
   "private": true,
   "main": "index.js",
   "scripts": {
@@ -30,7 +30,6 @@
     "multer": "^1.4.4",
     "mysql2": "^2.3.3",
     "nodemailer": "^6.7.2",
-    "rotating-file-stream": "^3.0.2",
     "swagger-ui-express": "^4.3.0",
     "typeorm": "^0.2.41",
     "uuid": "^8.3.2",
