@@ -17,6 +17,7 @@ const apiRouter = require("./routes/api");
 
 const config = require("./constants/config");
 const swaggerConfig = require("./swagger/swagger-config");
+const winstonConfig = require("./utilities/winston.utils");
 
 const app = express();
 
@@ -27,28 +28,6 @@ const app = express();
 //   useCreateIndex: true,
 //   useFindAndModify: false,
 // });
-
-// Create a rotating write stream for Logging system
-
-const pad = (num) => (num > 9 ? "" : "0") + num;
-
-const generator = (time, index) => {
-  if (!time) return "access.log";
-
-  const month = time.getFullYear() + "-" + pad(time.getMonth() + 1);
-  const day = pad(time.getDate());
-  const hour = pad(time.getHours());
-  const minute = pad(time.getMinutes());
-
-  return `${month}/${month}${day}-${hour}${minute}-${index}-access.log.gzip`;
-};
-
-const accessLogStream = rfs.createStream(generator, {
-  size: "10M", // rotate every 10 MegaBytes written
-  interval: "1d", // rotate daily
-  compress: "gzip", // compress rotated files
-  path: path.join(__dirname, "logs"), // place access log file to log folder
-});
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -62,7 +41,13 @@ if (process.env.NODE_ENV === "development") {
 }
 // Use Morgan Logging system
 // Stream logs to file
-app.use(morgan("combined", { stream: accessLogStream }));
+app.use(
+  morgan("combined", {
+    stream: {
+      write: (message) => winstonConfig.logger.info(message.trim()),
+    },
+  })
+);
 
 // Web Guard By Helmet
 app.use(
