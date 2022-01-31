@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const { loggerConsole } = require("../../utilities/winston.utils");
 
 const booksRouterApi = require("./books");
 const phoneRouterApi = require("./phone");
 const postsRouterApi = require("./posts");
 const authRouterApi = require("./auth");
-const { loggerConsole } = require("../../utilities/winston.utils");
 
 router.use("/books", booksRouterApi);
 router.use("/auth", authRouterApi);

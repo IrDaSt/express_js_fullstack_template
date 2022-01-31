@@ -33,7 +33,7 @@ app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 if (process.env.NODE_ENV === "development") {
-  console.log("Start Development mode");
+  console.log("Development mode");
   // Use Morgan Logging system
   // Dev console logs
   app.use(morgan("dev"));
