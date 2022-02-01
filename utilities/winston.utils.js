@@ -1,6 +1,10 @@
 const winston = require("winston");
 require("winston-daily-rotate-file");
 
+function isString(str) {
+  return typeof str === "string";
+}
+
 // Create a rotating write stream for Http Logging system
 const dailyRotateTransportHttp = new winston.transports.DailyRotateFile({
   filename: "application-%DATE%.log",
@@ -36,7 +40,14 @@ const loggerConsole = winston.createLogger({
   exitOnError: false,
   transports: [
     new winston.transports.Console({
-      format: winston.format.printf((info) => info.message),
+      format: winston.format.combine(
+        winston.format.timestamp({ format: "YYYY-MM-DD HH:mm:ss.SSS" }),
+        winston.format.colorize(),
+        winston.format.printf(
+          ({ level, message, label, timestamp }) =>
+            `${timestamp} ${label || "-"} ${level}: ${message}`
+        )
+      ),
     }),
     dailyRotateTransportConsole,
   ],
