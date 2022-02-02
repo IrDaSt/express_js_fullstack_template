@@ -17,10 +17,7 @@ booksRouterApi.get("/", async (req, res, next) => {
     const books = await booksServicesApi.getAll();
     responses.Success(res, books);
   } catch (error) {
-    return responses.InternalServerError(res, {
-      message: `Error getting book data `,
-      error,
-    });
+    return responses.InternalServerErrorCatch(res, error);
   }
 });
 
@@ -35,10 +32,7 @@ booksRouterApi.get("/:id", async (req, res, next) => {
     }
     responses.Success(res, book);
   } catch (error) {
-    return responses.InternalServerError(res, {
-      message: `Error getting book data `,
-      error,
-    });
+    return responses.InternalServerErrorCatch(res, error);
   }
 });
 
@@ -65,10 +59,7 @@ booksRouterApi.post(
         message: "Insert success",
       });
     } catch (error) {
-      return responses.InternalServerError(res, {
-        message: `Error creating book data`,
-        error,
-      });
+      return responses.InternalServerErrorCatch(res, error);
     }
   }
 );
@@ -98,10 +89,7 @@ booksRouterApi.put(
         message: "Update success",
       });
     } catch (error) {
-      return responses.InternalServerError(res, {
-        message: `Error updating book data `,
-        error,
-      });
+      return responses.InternalServerErrorCatch(res, error);
     }
   }
 );
@@ -123,10 +111,7 @@ booksRouterApi.delete(
         message: "Delete success",
       });
     } catch (error) {
-      return responses.InternalServerError(res, {
-        message: `Error deleting book data `,
-        error,
-      });
+      return responses.InternalServerErrorCatch(res, error);
     }
   }
 );

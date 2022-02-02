@@ -30,8 +30,7 @@ authRouterApi.get(
 
       responses.Success(res, result_user_info[0]);
     } catch (error) {
-      responses.InternalServerErrorCatch(res, error);
-      next(error);
+      return responses.InternalServerErrorCatch(res, error);
     }
   }
 );
@@ -77,8 +76,7 @@ authRouterApi.post(
         });
       }
     } catch (error) {
-      responses.InternalServerErrorCatch(res, error);
-      next(error);
+      return responses.InternalServerErrorCatch(res, error);
     }
   }
 );
@@ -130,8 +128,7 @@ authRouterApi.post(
         token,
       });
     } catch (error) {
-      responses.InternalServerErrorCatch(res, error);
-      next(error);
+      return responses.InternalServerErrorCatch(res, error);
     }
   }
 );
@@ -152,8 +149,7 @@ authRouterApi.post(
     try {
       res.json(await auth.requestVerification(req));
     } catch (error) {
-      responses.InternalServerErrorCatch(res, error);
-      next(error);
+      return responses.InternalServerErrorCatch(res, error);
     }
   }
 );

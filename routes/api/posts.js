@@ -24,8 +24,7 @@ postsRouterApi.get("/", async (req, res, next) => {
       responses.Success(res, posts);
     }
   } catch (error) {
-    responses.InternalServerErrorCatch(res, error);
-    next(error);
+    return responses.InternalServerErrorCatch(res, error);
   }
 });
 
@@ -47,8 +46,7 @@ postsRouterApi.post(
       });
       return responses.Success(res, result_insert_post);
     } catch (error) {
-      responses.InternalServerErrorCatch(res, error);
-      next(error);
+      return responses.InternalServerErrorCatch(res, error);
     }
   }
 );
@@ -83,8 +81,7 @@ postsRouterApi.put(
         });
       }
     } catch (error) {
-      responses.InternalServerErrorCatch(res, error);
-      next(error);
+      return responses.InternalServerErrorCatch(res, error);
     }
   }
 );
@@ -109,8 +106,7 @@ postsRouterApi.delete(
       const result_delete = await postsServicesApi.deleteOneById(id_post);
       return responses.Success(res, result_delete);
     } catch (error) {
-      responses.InternalServerErrorCatch(res, error);
-      next(error);
+      return responses.InternalServerErrorCatch(res, error);
     }
   }
 );
