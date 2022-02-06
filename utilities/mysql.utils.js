@@ -1,18 +1,36 @@
 const mysql = require("mysql2/promise");
 const config = require("../constants/config");
 
-const query = async (sql, values) => {
-  const conn = await mysql.createConnection({
-    ...config.database.one,
-    connectTimeout: 10000,
-    connectionLimit: 5,
-  });
-  const [result] = await conn.query(sql, values);
-  return result;
-};
+class MysqlConnection {
+  constructor() {
+    this.initConnection();
+  }
 
-const mysqlconn = {
-  query,
-};
+  async initConnection() {
+    const conn = await mysql.createConnection({
+      ...config.database.one,
+    });
+    this.conn = conn;
+  }
+
+  async query(sql, values) {
+    try {
+      await this.conn?.connect();
+    } catch (error) {
+      if (error.code === "ECONNRESET") {
+        await this.initConnection();
+      }
+    }
+
+    if (this.conn) {
+      const [result] = await this.conn.query(sql, values);
+      return result;
+    } else {
+      return this.conn;
+    }
+  }
+}
+
+const mysqlconn = new MysqlConnection();
 
 module.exports = mysqlconn;
