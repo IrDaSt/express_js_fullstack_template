@@ -24,7 +24,7 @@ class TypeOrmConnection {
       })
       .catch((err) => {
         loggerConsole.error("database connection error");
-        console.log(err);
+        console.error({ ...err });
         return;
       });
   }
