@@ -15,7 +15,7 @@ const verifyToken = (req, res, next) => {
       config.secret_token,
       (err, value) => {
         if (err)
-          responses.InternalServerError(res, {
+          return responses.InternalServerError(res, {
             message: "Failed to authenticate token",
             err,
           });
