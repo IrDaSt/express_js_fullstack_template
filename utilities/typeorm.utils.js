@@ -18,16 +18,42 @@ const connection1 = typeorm.createConnection({
 
 class TypeOrmConnection {
   constructor() {
-    connection1
+    this.reconnectOne();
+  }
+
+  connectOne = async () => {
+    if (this.connection_one?.isConnected) return;
+    await connection_one
       .then((conn) => {
-        this.connection1 = conn;
+        this.connection_one = conn;
       })
       .catch((err) => {
-        loggerConsole.error("database connection error");
-        console.error({ ...err });
+        loggerConsole.error("database connection_one error");
+        // eslint-disable-next-line no-console
+        console.error({
+          error: {
+            message: err.message,
+            stack: err.stack,
+            ...err,
+          },
+        });
         return;
       });
-  }
+  };
+
+  disconnectOne = async () => {
+    if (this.connection_one?.isConnected) await this.connection_one?.close();
+  };
+
+  reconnectOne = async () => {
+    await this.disconnectOne();
+    while (!this.connection_one?.isConnected) {
+      await this.connectOne();
+      if (this.connection_one?.isConnected) return;
+      loggerConsole.info(`reconnecting to database_one after 10 seconds...`);
+      await new Promise((resolve) => setTimeout(resolve, 10000));
+    }
+  };
 }
 
 const typeormconn = new TypeOrmConnection();
