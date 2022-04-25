@@ -18,12 +18,13 @@ const connection1 = typeorm.createConnection({
 
 class TypeOrmConnection {
   constructor() {
+    this.connection_one = undefined;
     this.reconnectOne();
   }
 
   connectOne = async () => {
     if (this.connection_one?.isConnected) return;
-    await connection_one
+    await connection1
       .then((conn) => {
         this.connection_one = conn;
       })
