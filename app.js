@@ -48,15 +48,6 @@ app.use(
   })
 );
 
-// Web Guard By Helmet
-app.use(
-  helmet({
-    originAgentCluster: false,
-    contentSecurityPolicy: false,
-    crossOriginEmbedderPolicy: false,
-  })
-);
-
 // Json Parser
 app.use(express.json());
 // Form encoded Parser
@@ -74,6 +65,15 @@ app.use(flash());
 app.use(express.static(path.join(__dirname, "public")));
 // Cross-origin resource sharing
 app.use(cors());
+
+// Web Guard By Helmet
+app.use(
+  helmet({
+    originAgentCluster: false,
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false,
+  })
+);
 
 // Swagger UI
 app.use(
