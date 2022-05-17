@@ -57,9 +57,9 @@ app.use(cookieParser());
 
 // Session set up
 // Please use Cookie instead of session for production environment
-app.use(session(config.session_setting));
+// app.use(session(config.session_setting));
 // Flash session
-app.use(flash());
+// app.use(flash());
 
 // Public folder set up
 app.use(express.static(path.join(__dirname, "public")));
