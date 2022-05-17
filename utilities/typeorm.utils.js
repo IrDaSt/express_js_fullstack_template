@@ -24,16 +24,17 @@ class TypeOrmConnection {
 
   init = async () => {
     await this.connectOne();
-    if (!this.connection_one?.isConnected) this.reconnectOne();
+    if (!this.connection_one?.isInitialized) this.reconnectOne();
   };
 
   connectOne = async () => {
-    if (this.connection_one?.isConnected) return;
+    if (this.connection_one?.isInitialized) return;
     loggerConsole.info(`connecting to connection_one...`);
-    await typeorm
-      .createConnection({
-        ...connection1,
-      })
+    const data_source_connection_one = new typeorm.DataSource({
+      ...connection1,
+    });
+    await data_source_connection_one
+      .initialize()
       .then((conn) => {
         this.connection_one = conn;
         loggerConsole.info(`connected to connection_one`);
@@ -52,17 +53,17 @@ class TypeOrmConnection {
   };
 
   disconnectOne = async () => {
-    if (this.connection_one?.isConnected) {
-      await this.connection_one?.close();
+    if (this.connection_one?.isInitialized) {
+      await this.connection_one?.destroy();
       this.connection_one = undefined;
     }
   };
 
   reconnectOne = async () => {
     await this.disconnectOne();
-    while (!this.connection_one?.isConnected) {
+    while (!this.connection_one?.isInitialized) {
       await this.connectOne();
-      if (this.connection_one?.isConnected) return;
+      if (this.connection_one?.isInitialized) return;
       loggerConsole.info(`reconnecting to database_one after 10 seconds...`);
       await new Promise((resolve) => setTimeout(resolve, 10000));
     }
