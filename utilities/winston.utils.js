@@ -8,7 +8,7 @@ function isString(str) {
 
 // Create a rotating write stream for Http Logging system
 const dailyRotateTransportHttp = new winston.transports.DailyRotateFile({
-  filename: path.join(__dirname, "logs", "http", "application-%DATE%.log"),
+  filename: path.join("./logs", "http", "application-%DATE%.log"),
   datePattern: "YYYY-MM-DD-HH",
   zippedArchive: true,
   maxSize: "10m",
@@ -18,7 +18,7 @@ const dailyRotateTransportHttp = new winston.transports.DailyRotateFile({
 
 // Create a rotating write stream for Console Logging system
 const dailyRotateTransportConsole = new winston.transports.DailyRotateFile({
-  filename: path.join(__dirname, "logs", "console", "application-%DATE%.log"),
+  filename: path.join("./logs", "console", "application-%DATE%.log"),
   datePattern: "YYYY-MM-DD-HH",
   zippedArchive: true,
   maxSize: "10m",
