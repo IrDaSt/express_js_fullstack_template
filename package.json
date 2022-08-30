@@ -7,9 +7,14 @@
     "start": "node ./src/index.js",
     "build": "npm run build:scss",
     "build:scss": "sass --style=compressed --error-css --stop-on-error --color --trace ./public/scss/:./public/dist/scss-css",
+    "build:docker": "docker build . -t danielwj00/express_js_fullstack_template:3.4.0",
     "dev": "SET DEBUG=express-js-fullstack-template:* & nodemon",
     "dev:scss:watch": "npm run build:scss && sass --style=compressed --error-css --update --watch --poll --stop-on-error --color --trace ./public/scss/:./public/dist/scss-css",
-    "test": "npm run build && mocha --exit"
+    "test": "npm run build && mocha --exit",
+    "deploy:helm:install": "helm install express-js-fullstack-template .kube_helm/",
+    "deploy:helm:upgrade": "helm upgrade express-js-fullstack-template .kube_helm/",
+    "deploy:helm:uninstall": "helm uninstall express-js-fullstack-template",
+    "deploy:helm:run": "kubectl port-forward services/express-js-fullstack-template 4000:4000"
   },
   "dependencies": {
     "async": "^3.2.4",
