@@ -1,8 +1,8 @@
-const typeorm = require("typeorm");
-const config = require("../constants/config");
-const { PostsEntity } = require("../models/entities/Posts.entity");
-const { UserEntity } = require("../models/entities/User.entity");
-const { loggerConsole } = require("./winston.utils");
+const typeorm = require("typeorm")
+const config = require("../constants/config")
+const { PostsEntity } = require("../models/entities/Posts.entity")
+const { UserEntity } = require("../models/entities/User.entity")
+const { loggerConsole } = require("./winston.utils")
 
 const connection1 = {
   type: "mariadb",
@@ -13,34 +13,41 @@ const connection1 = {
   password: config.database.one.password,
   database: config.database.one.database,
   synchronize: false,
+  cache: {
+    type: "redis",
+    options: {
+      host: "localhost",
+      port: 6379,
+    },
+  },
   entities: [PostsEntity, UserEntity],
-};
+}
 
 class TypeOrmConnection {
   constructor() {
-    this.connection_one = undefined;
-    this.init();
+    this.connection_one = undefined
+    this.init()
   }
 
   init = async () => {
-    await this.connectOne();
-    if (!this.connection_one?.isInitialized) this.reconnectOne();
-  };
+    await this.connectOne()
+    if (!this.connection_one?.isInitialized) this.reconnectOne()
+  }
 
   connectOne = async () => {
-    if (this.connection_one?.isInitialized) return;
-    loggerConsole.info(`connecting to connection_one...`);
+    if (this.connection_one?.isInitialized) return
+    loggerConsole.info(`connecting to connection_one...`)
     const data_source_connection_one = new typeorm.DataSource({
       ...connection1,
-    });
+    })
     await data_source_connection_one
       .initialize()
       .then((conn) => {
-        this.connection_one = conn;
-        loggerConsole.info(`connected to connection_one`);
+        this.connection_one = conn
+        loggerConsole.info(`connected to connection_one`)
       })
       .catch((err) => {
-        loggerConsole.error("database connection_one error");
+        loggerConsole.error("database connection_one error")
         // eslint-disable-next-line no-console
         console.error({
           error: {
@@ -48,28 +55,28 @@ class TypeOrmConnection {
             stack: err.stack,
             ...err,
           },
-        });
-      });
-  };
+        })
+      })
+  }
 
   disconnectOne = async () => {
     if (this.connection_one?.isInitialized) {
-      await this.connection_one?.destroy();
-      this.connection_one = undefined;
+      await this.connection_one?.destroy()
+      this.connection_one = undefined
     }
-  };
+  }
 
   reconnectOne = async () => {
-    await this.disconnectOne();
+    await this.disconnectOne()
     while (!this.connection_one?.isInitialized) {
-      await this.connectOne();
-      if (this.connection_one?.isInitialized) return;
-      loggerConsole.info(`reconnecting to database_one after 10 seconds...`);
-      await new Promise((resolve) => setTimeout(resolve, 10000));
+      await this.connectOne()
+      if (this.connection_one?.isInitialized) return
+      loggerConsole.info(`reconnecting to database_one after 10 seconds...`)
+      await new Promise((resolve) => setTimeout(resolve, 10000))
     }
-  };
+  }
 }
 
-const typeormconn = new TypeOrmConnection();
+const typeormconn = new TypeOrmConnection()
 
-module.exports = typeormconn;
+module.exports = typeormconn

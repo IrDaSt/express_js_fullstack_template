@@ -1,13 +1,13 @@
 {
   "name": "express-js-fullstack-template",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "private": true,
   "main": "index.js",
   "scripts": {
     "start": "node ./src/index.js",
     "build": "npm run build:scss",
     "build:scss": "sass --style=compressed --error-css --stop-on-error --color --trace ./public/scss/:./public/dist/scss-css",
-    "build:docker": "docker build . -t danielwj00/express_js_fullstack_template:3.4.0",
+    "build:docker": "docker build . -t danielwj00/express_js_fullstack_template:3.4.1",
     "dev": "SET DEBUG=express-js-fullstack-template:* & nodemon",
     "dev:scss:watch": "npm run build:scss && sass --style=compressed --error-css --update --watch --poll --stop-on-error --color --trace ./public/scss/:./public/dist/scss-css",
     "test": "npm run build && mocha --exit",
