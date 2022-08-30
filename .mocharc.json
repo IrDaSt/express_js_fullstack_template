@@ -1,0 +1,4 @@
+{
+	"spec": ["./src/routes/**/*.spec.js"],
+	"timeout": 5000
+}

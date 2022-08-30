@@ -10,4 +10,4 @@ const inputUtils = {
   ValidateEmail,
 }
 
-export default inputUtils
+module.exports = inputUtils

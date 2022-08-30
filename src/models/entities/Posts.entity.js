@@ -1,4 +1,4 @@
-const { EntitySchema } = require("typeorm");
+const { EntitySchema } = require("typeorm")
 
 const PostsEntity = new EntitySchema({
   name: "Posts", // Will use table name `post` as default behaviour.
@@ -29,7 +29,7 @@ const PostsEntity = new EntitySchema({
     },
   },
   relations: {
-    user_post: {
+    user_data: {
       target: "User",
       type: "many-to-one",
       inverseSide: "list_post",
@@ -38,6 +38,6 @@ const PostsEntity = new EntitySchema({
       },
     },
   },
-});
+})
 
-module.exports = { PostsEntity };
+module.exports = { PostsEntity }

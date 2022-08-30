@@ -1,4 +1,4 @@
-const { EntitySchema } = require("typeorm");
+const { EntitySchema } = require("typeorm")
 
 const UserEntity = new EntitySchema({
   name: "User", // Will use table name `user` as default behaviour.
@@ -35,12 +35,12 @@ const UserEntity = new EntitySchema({
     list_post: {
       target: "Posts",
       type: "one-to-many",
-      inverseSide: "user_post",
+      inverseSide: "user_data",
       joinColumn: {
         name: "id_user",
       },
     },
   },
-});
+})
 
-module.exports = { UserEntity };
+module.exports = { UserEntity }

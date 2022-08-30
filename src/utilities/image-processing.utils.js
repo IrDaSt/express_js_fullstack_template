@@ -32,4 +32,4 @@ const imageProcessingUtils = {
   breakToMultiSize,
 }
 
-export default imageProcessingUtils
+module.exports = imageProcessingUtils
