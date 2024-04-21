@@ -4,7 +4,7 @@ const { PostsEntity } = require("../models/entities/Posts.entity")
 const { UserEntity } = require("../models/entities/User.entity")
 const { loggerConsole } = require("./winston.utils")
 
-const connection1 = {
+const connection1 = typeorm.createConnection({
   type: "mariadb",
   name: "conn1",
   host: config.database.one.host,
@@ -13,67 +13,20 @@ const connection1 = {
   password: config.database.one.password,
   database: config.database.one.database,
   synchronize: false,
-  cache: {
-    type: "redis",
-    options: {
-      host: "localhost",
-      port: 6379,
-    },
-  },
   entities: [PostsEntity, UserEntity],
-}
+})
 
 class TypeOrmConnection {
   constructor() {
-    this.connection_one = undefined
-    this.init()
-  }
-
-  init = async () => {
-    await this.connectOne()
-    if (!this.connection_one?.isInitialized) this.reconnectOne()
-  }
-
-  connectOne = async () => {
-    if (this.connection_one?.isInitialized) return
-    loggerConsole.info(`connecting to connection_one...`)
-    const data_source_connection_one = new typeorm.DataSource({
-      ...connection1,
-    })
-    await data_source_connection_one
-      .initialize()
+    connection1
       .then((conn) => {
-        this.connection_one = conn
-        loggerConsole.info(`connected to connection_one`)
+        this.connection1 = conn
       })
       .catch((err) => {
-        loggerConsole.error("database connection_one error")
-        // eslint-disable-next-line no-console
-        console.error({
-          error: {
-            message: err.message,
-            stack: err.stack,
-            ...err,
-          },
-        })
+        loggerConsole.error("database connection error")
+        console.error({ ...err })
+        return
       })
-  }
-
-  disconnectOne = async () => {
-    if (this.connection_one?.isInitialized) {
-      await this.connection_one?.destroy()
-      this.connection_one = undefined
-    }
-  }
-
-  reconnectOne = async () => {
-    await this.disconnectOne()
-    while (!this.connection_one?.isInitialized) {
-      await this.connectOne()
-      if (this.connection_one?.isInitialized) return
-      loggerConsole.info(`reconnecting to database_one after 10 seconds...`)
-      await new Promise((resolve) => setTimeout(resolve, 10000))
-    }
   }
 }
 
